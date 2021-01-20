@@ -212,6 +212,8 @@ export default {
     data() {
         return {
             dashBoardUrl: "/dashboard/sewing",
+            //connectTimeOut
+            rfidWebsocketReconnect: null,
         };
     },
     components: {
@@ -227,7 +229,10 @@ export default {
         this.initRfidWebSocket();
     },
     beforeDestroy: function () {
-        this.rfidWebsocket.close();
+        if (this.rfidWebsocketReconnect !== null) {
+            clearTimeout(this.rfidWebsocketReconnect);
+        }
+        // this.rfidWebsocket.close();
     },
     computed: {
         sewingLists() {
@@ -260,10 +265,76 @@ export default {
         //     });
         // },
         initRfidWebSocket() {
-            this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/get_user"
+            // this.rfidWebsocket = require("socket.io")(
+            //     "https://10.112.10.127:1500/userlog/get_user/" +
+            //         Math.random().toString(36).substring(7)
+            // );
+            // this.rfidWebsocket = this.$socketio.connect(
+            //     "ws://10.112.10.66:8000/userlog/" +
+            //         Math.random().toString(36).substring(7),
+            //     { origins: "*:*" }
+            // );
+            // this.rfidWebsocket = this.$socketio.connect(
+            //     "ws://10.112.10.127:1500/userlog/get_user/" +
+            //         Math.random().toString(36).substring(7)
+            // );
+            //https寫法
+            this.rfidWebsocket = this.$socketio.connect(
+                "http://10.112.10.66:8000/userlog/" +
+                    Math.random().toString(36).substring(7),
+                {
+                    rejectUnauthorized: false,
+                }
             );
-            this.setRfidListener();
+            // this.rfidWebsocket = new WebSocket(
+            //     "ws://10.112.10.127:1500/userlog/get_user"
+            // );
+            this.setRfidListenerSocketio();
+        },
+        setRfidListenerSocketio() {
+            this.rfidWebsocket.on("connect", () => {
+                console.log("socket.io連線開啟-清單RFID");
+            });
+
+            this.rfidWebsocket.on("disconnect", () => {
+                console.log("socket.io連線關閉-清單RFID");
+            });
+            this.rfidWebsocket.on("connect_error", () => {
+                this.rfidWebsocketReconnect = setTimeout(() => {
+                    console.log("socket.io連線關閉-嘗試重新連線中-清單RFID");
+                    this.rfidWebsocket.connect();
+                }, 1000);
+            });
+            this.rfidWebsocket.on("connect", () => {
+                console.log("socket.io連線開啟-清單RFID");
+            });
+            this.rfidWebsocket.on("event", () => {
+                console.log("socket.io收到事件包-清單RFID");
+                console.log("socket: ", event.data);
+            });
+
+            // //接收 Server 發送的訊息
+            // this.rfidWebsocket.onmessage = (event) => {
+            //     console.log("WebSocket收到事件包-清單RFID");
+            //     console.log("user: ", JSON.parse(JSON.parse(event.data)));
+            //     // console.log("count: ", JSON.parse(event.data).swpcount);
+            //     var eventData = JSON.parse(JSON.parse(event.data));
+            //     if (eventData.card_id) {
+            //         this.$store.dispatch("sewingLists/setSewingListStatus", {
+            //             userName: eventData.username,
+            //             userStatus: eventData.status,
+            //             machineNo: eventData.device_id,
+            //             machineStatus: eventData.power_device,
+            //             checkTime: moment()
+            //                 .utc(eventData.timestamp)
+            //                 .format("HH:mm"),
+            //         });
+            //     }
+            // };
+            // this.rfidWebsocket.onerror = function (error) {
+            //     console.error("WebSocket連線錯誤-清單RFID");
+            //     console.error(`[error] ${error.message}`);
+            // };
         },
         setRfidListener() {
             this.rfidWebsocket.onopen = () => {

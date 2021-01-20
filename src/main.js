@@ -71,6 +71,9 @@ require('./assets/css/iconfont.css')
 // Note: In latest version you have to add it separately
 // import 'vue-select/dist/vue-select.css';
 
+//Socket.io-client
+import io from 'socket.io-client'
+Vue.prototype.$socketio = io
 
 Vue.config.productionTip = false
 

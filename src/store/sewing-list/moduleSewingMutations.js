@@ -14,10 +14,10 @@ export default {
     SET_SEWINGS(state, sewingLists) {
 
         state.sewingLists = sewingLists;
-        console.log('getDataMutation', state.sewingLists)
+        // console.log('getDataMutation', state.sewingLists)
     },
     SET_SEWING_LIST_STATUS(state, updateItem) {
-        console.log('updateDATA', updateItem)
+        // console.log('updateDATA', updateItem)
         for (const [lineKey, lineValue] of state.sewingLists.entries()) {
             for (const [machineKey, machineValue] of lineValue.factory_devices.entries()) {
                 if (machineValue.device_name === updateItem.machineNo) {

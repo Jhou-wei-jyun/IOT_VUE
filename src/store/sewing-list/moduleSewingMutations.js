@@ -12,19 +12,20 @@ import moment from "moment";
 
 export default {
     SET_SEWINGS(state, sewingLists) {
-        console.log('getDataMutation', sewingLists)
+
         state.sewingLists = sewingLists;
+        console.log('getDataMutation', state.sewingLists)
     },
     SET_SEWING_LIST_STATUS(state, updateItem) {
+        console.log('updateDATA', updateItem)
         for (const [lineKey, lineValue] of state.sewingLists.entries()) {
-            // console.log(`${lineKey}: ${lineValue}`);
-            for (const [machineKey, machineValue] of lineValue.machines.entries()) {
-                if (machineValue.machineNo === updateItem.machineNo) {
-                    state.sewingLists[lineKey].machines[machineKey] = Object.assign(state.sewingLists[lineKey].machines[machineKey], {
-                        userStatus: updateItem.userStatus,
-                        machineStatus: updateItem.machineStatus,
-                        user: updateItem.userName,
-                        checkTime: updateItem.checkTime,
+            for (const [machineKey, machineValue] of lineValue.factory_devices.entries()) {
+                if (machineValue.device_name === updateItem.machineNo) {
+                    state.sewingLists[lineKey].factory_devices[machineKey] = Object.assign(state.sewingLists[lineKey].factory_devices[machineKey], {
+                        user_status: updateItem.userStatus,
+                        device_status: updateItem.machineStatus,
+                        user_name: updateItem.userName,
+                        used_time: updateItem.checkTime,
                     })
                     break
                 }

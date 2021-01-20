@@ -14,7 +14,7 @@
                             <div class="machine-icon mx-auto">
                                 <svg
                                     :style="
-                                        getStyle(usingMachine.machineStatus)
+                                        getStyle(usingMachine.device_status)
                                     "
                                     width="75"
                                     height="75"
@@ -90,7 +90,7 @@
                                 </svg>
                                 <img
                                     class="user-icon"
-                                    :src="getUserIcon(usingMachine.userStatus)"
+                                    :src="getUserIcon(usingMachine.user_status)"
                                     width="50"
                                 />
                             </div>
@@ -98,8 +98,8 @@
                         <div class="vx-col w-full md:w-1/5 flex items-center">
                             <div class="flex mx-auto">
                                 <h1>
-                                    <p>{{ usingMachine.lineNo }}</p>
-                                    <p>{{ usingMachine.machineNo }}</p>
+                                    <p>{{ usingMachine.factory_line_name }}</p>
+                                    <p>{{ usingMachine.device_name }}</p>
                                 </h1>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                             <div class="flex mx-auto">
                                 <h1>
                                     {{
-                                        usingMachine.user
+                                        usingMachine.user_name
                                             | userFilter(usingMachine)
                                     }}
                                 </h1>
@@ -128,7 +128,7 @@
                             <div class="flex mx-auto">
                                 <h1>
                                     {{
-                                        usingMachine.checkTime
+                                        usingMachine.used_time
                                             | timestampToDatetime
                                     }}
                                 </h1>
@@ -462,6 +462,7 @@ export default {
                 },
             },
             namespace: null,
+            device_id: null,
         };
     },
     components: {
@@ -470,17 +471,18 @@ export default {
         VxTimeline,
     },
     created() {
+        this.device_id = window.location.href.split("sewing/")[1];
         this.namespace = "sewing" + window.location.href.split("sewing/")[1];
         if (!moduleSewing.isRegistered) {
-            console.log("init");
             this.$store.registerModule("sewingLists", moduleSewing);
             moduleSewing.isRegistered = true;
             this.$store.dispatch("sewingLists/fetchSewingItems");
+            // console.log("init", this.$store.state.sewingLists.sewingLists);
         }
         this.$store.registerModule(this.namespace, moduleSewingInfo);
         this.$store.dispatch(this.namespace + "/resetSate", this.initalState);
 
-        this.initSewingWebSocket();
+        // this.initSewingWebSocket();
         this.initRfidWebSocket();
         // this.initElectWebSocket();
     },
@@ -496,15 +498,16 @@ export default {
                 device_name: window.location.href.split("sewing/")[1],
             }
         );
-        await this.$store.commit(this.namespace + "/UPDATE_USING_MACHINE", {
+        // console.log("init2", this.$store.state.sewingLists.sewingLists);
+        await this.$store.dispatch(this.namespace + "/updateUsingMachine", {
             updateData: this.$store.state.sewingLists.sewingLists,
             namespace: window.location.href.split("sewing/")[1],
         });
         //FAKE用
-        this.fakeDataLoop(1500);
-        this.counterInterval3000 = setInterval(() => {
-            this.resetElectricity();
-        }, 1000 * 60 * 3.2);
+        // this.fakeDataLoop(1500);
+        // this.counterInterval3000 = setInterval(() => {
+        //     this.resetElectricity();
+        // }, 1000 * 60 * 3.2);
     },
     beforeDestroy: function () {
         clearInterval(this.counterInterval3000);
@@ -512,7 +515,7 @@ export default {
         // this.$store.commit(this.namespace + "/RESET_STATE");
         // this.$store.unregisterModule("sewingLists");
         this.$store.unregisterModule(this.namespace);
-        this.sewingWebsocket.close();
+        // this.sewingWebsocket.close();
         this.rfidWebsocket.close();
         // this.electWebsocket.close();
     },
@@ -525,13 +528,14 @@ export default {
             }
         },
         userFilter(status, usingMachine) {
+            // console.log(status);
             if (status === null) {
                 return status;
             }
-            if (usingMachine.userStatus === "in") {
+            if (usingMachine.user_status === "in") {
                 return status + " 使用中";
             }
-            if (usingMachine.userStatus === "out") {
+            if (usingMachine.user_status === "out") {
                 return "前一位使用者: " + status;
             }
         },
@@ -584,7 +588,7 @@ export default {
                     datetime: moment().valueOf(),
                 };
                 this.$store.dispatch(this.namespace + "/setElectricity", obj);
-                console.log("power", obj);
+                // console.log("power", obj);
             }, 1000);
         },
         initSewingWebSocket() {
@@ -622,7 +626,7 @@ export default {
                 // console.log("count: ", JSON.parse(event.data).swpcount);
                 var eventData = JSON.parse(JSON.parse(event.data));
                 if (eventData.swpcount) {
-                    if (this.usingMachine.machineNo === eventData.device_id) {
+                    if (this.usingMachine.device_name === eventData.device_id) {
                         // this.$store.dispatch(this.namespace + "/setElectricity", {
                         //     value: parseInt(eventData.swpcount),
                         //     datetime: new Date(),
@@ -653,7 +657,10 @@ export default {
                 console.log("user: ", JSON.parse(JSON.parse(event.data)));
                 // console.log("count: ", JSON.parse(event.data).swpcount);
                 var eventData = JSON.parse(JSON.parse(event.data));
-                if (eventData.card_id) {
+                if (
+                    eventData.card_id &&
+                    eventData.device_id == this.device_id
+                ) {
                     this.$store.dispatch(this.namespace + "/setStatus", {
                         userName: eventData.username,
                         userStatus: eventData.status,
@@ -662,6 +669,10 @@ export default {
                             .utc(eventData.timestamp)
                             .format("HH:mm"),
                     });
+                    // console.log(
+                    //     "send before",
+                    //     this.$store.state[this.namespace].sewingRecordLists
+                    // );
                     this.$store.dispatch(this.namespace + "/addSewingLog", {
                         userId: eventData.card_id,
                         userName: eventData.username,
@@ -670,6 +681,10 @@ export default {
                             .utc(eventData.timestamp)
                             .format("HH:mm"),
                     });
+                    // console.log(
+                    //     "send after",
+                    //     this.$store.state[this.namespace].sewingRecordLists
+                    // );
                 }
             };
             this.rfidWebsocket.onerror = function (error) {

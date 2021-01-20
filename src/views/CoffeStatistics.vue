@@ -1,5 +1,5 @@
 <template>
-    <div id="basic-card">
+    <div id="coffe-statistic-basic-card">
         <div class="vx-row">
             <!-- CARD 2: 操作時間 -->
             <div class="vx-col w-full md:w-1/2 mb-base">
@@ -390,7 +390,7 @@ export default {
     width: 100px;
     // border: 1px solid red;
 }
-#basic-card {
+#coffe-statistic-basic-card {
     .overlay-card {
         .vx-card__collapsible-content {
             max-height: 485px;

@@ -89,10 +89,8 @@ export default {
         // state.usingMachine = obj
         state.usingMachine = { ...obj }
     },
-    ADD_RECORD_ITEM(state, item) {
-        state.recordLists.unshift(item)
-    },
     SET_SEWING_RECORD_LISTS(state, sewingRecordLists) {
+        // console.log('check', sewingRecordLists)
         state.sewingRecordLists = sewingRecordLists
     },
     RESET_STATE(state, obj) {
@@ -111,6 +109,7 @@ export default {
 
     },
     SET_USER(state, obj) {
+        console.log('da', state.usingMachine)
         // console.log('userName', obj.userName)
         // console.log('userStatus', obj.userStatus)
         // console.log('machineStatus', obj.machineStatus)
@@ -118,25 +117,26 @@ export default {
         state.usingMachine = {
             ...state.usingMachine,
             ...{
-                user: obj.userName,
-                userStatus: obj.userStatus,
-                machineStatus: obj.machineStatus,
-                checkTime: obj.checkTime,
+                user_name: obj.userName,
+                user_status: obj.userStatus,
+                device_status: obj.machineStatus,
+                used_time: obj.checkTime,
             },
         };
     },
     UPDATE_USING_MACHINE(state, updateItem) {
         for (const [lineKey, lineValue] of updateItem.updateData.entries()) {
-            // console.log(`${lineKey}: ${lineValue}`);
-            for (const [machineKey, machineValue] of lineValue.machines.entries()) {
-                if (machineValue.machineNo === updateItem.namespace) {
+            for (const [machineKey, machineValue] of lineValue.factory_devices.entries()) {
+                if (machineValue.device_name === updateItem.namespace) {
+                    console.log('zzz', machineValue)
                     let result = {
-                        lineNo: lineValue.lineNo,
-                        machineNo: machineValue.machineNo,
-                        userStatus: machineValue.userStatus,
-                        machineStatus: machineValue.machineStatus,
-                        user: machineValue.user,
-                        checkTime: machineValue.checkTime,
+                        factory_line_id: lineValue.factory_line_id,
+                        factory_line_name: lineValue.factory_line_name,
+                        device_name: machineValue.device_name,
+                        user_status: machineValue.user_status,
+                        device_status: machineValue.device_status,
+                        user_name: machineValue.user_name,
+                        used_time: machineValue.used_time,
                     }
                     state.usingMachine = { ...result }
                     break
@@ -172,9 +172,11 @@ export default {
 
     // },
     ADD_SEWING_LOG_ITEM_IN(state, addItem) {
+        // console.log('in', state.sewingRecordLists)
         state.sewingRecordLists.unshift(addItem)
     },
     ADD_SEWING_LOG_ITEM_OUT(state, addItem) {
+        // console.log('out', state.sewingRecordLists)
         state.sewingRecordLists[0] = Object.assign(state.sewingRecordLists[0], addItem);
     }
 

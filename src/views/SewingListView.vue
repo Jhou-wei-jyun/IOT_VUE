@@ -1,8 +1,8 @@
 <template>
     <div id="dashboard-analytics">
-        <button @click="sendTestDataIn">登入</button>
-        <button @click="sendTestDataOut">登出</button>
-
+        <!-- <button @click="sendTestDataIn">登入</button>
+        <button @click="sendTestDataOut">登出</button> -->
+        <!-- {{ sewingLists }} -->
         <div class="vx-row">
             <!-- CARD 1: 操作人員 -->
             <div class="vx-col w-full mb-base">
@@ -44,14 +44,14 @@
                     >
                         <div class="vx-col md:w-1/6 my-auto">
                             <div class="text-center">
-                                <h1>{{ item.lineNo }}</h1>
+                                <h1>{{ item.factory_line_name }}</h1>
                             </div>
                         </div>
 
                         <div class="vx-col md:w-5/6 my-auto">
                             <div class="vx-row">
                                 <div
-                                    v-for="(i, idx) in item.machines"
+                                    v-for="(i, idx) in item.factory_devices"
                                     :key="idx"
                                     class="vx-col md:w-1/10"
                                 >
@@ -61,7 +61,7 @@
                                         :to="{
                                             path:
                                                 '/dashboard/sewing/' +
-                                                i.machineNo,
+                                                i.device_name,
                                         }"
                                     >
                                         <div class="text-center">
@@ -69,7 +69,7 @@
                                                 <svg
                                                     :style="
                                                         getStyle(
-                                                            i.machineStatus
+                                                            i.device_status
                                                         )
                                                     "
                                                     width="75"
@@ -151,7 +151,7 @@
                                                     class="user-icon"
                                                     :src="
                                                         getUserIcon(
-                                                            i.userStatus
+                                                            i.user_status
                                                         )
                                                     "
                                                     width="50"
@@ -163,7 +163,7 @@
                                         svgClasses="w-10 h-10 "
                                         :class="getStyle(i.machineStatus)"
                                     ></feather-icon> -->
-                                            <p>{{ i.machineNo }}</p>
+                                            <p>{{ i.device_name }}</p>
                                         </div>
                                     </router-link>
                                 </div>
@@ -241,24 +241,24 @@ export default {
         },
     },
     methods: {
-        sendTestDataOut() {
-            this.$store.dispatch("sewingLists/setSewingListStatus", {
-                userName: "Phil",
-                userStatus: "out",
-                machineNo: "SB20002",
-                machineStatus: "off",
-                checkTime: moment(new Date()).format("HH:mm"),
-            });
-        },
-        sendTestDataIn() {
-            this.$store.dispatch("sewingLists/setSewingListStatus", {
-                userName: "Phil",
-                userStatus: "in",
-                machineNo: "SB20002",
-                machineStatus: "on",
-                checkTime: moment(new Date()).format("HH:mm"),
-            });
-        },
+        // sendTestDataOut() {
+        //     this.$store.dispatch("sewingLists/setSewingListStatus", {
+        //         userName: "Phil",
+        //         userStatus: "out",
+        //         machineNo: "SB20002",
+        //         machineStatus: "off",
+        //         checkTime: moment(new Date()).format("HH:mm"),
+        //     });
+        // },
+        // sendTestDataIn() {
+        //     this.$store.dispatch("sewingLists/setSewingListStatus", {
+        //         userName: "Phil",
+        //         userStatus: "in",
+        //         machineNo: "SB20002",
+        //         machineStatus: "on",
+        //         checkTime: moment(new Date()).format("HH:mm"),
+        //     });
+        // },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
                 "ws://10.112.10.127:1500/userlog/get_user"

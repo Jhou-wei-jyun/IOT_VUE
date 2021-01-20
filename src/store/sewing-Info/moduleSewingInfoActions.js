@@ -8,7 +8,7 @@
 ==========================================================================================*/
 
 import axios from '@/axios.js'
-
+import moment from "moment"
 export default {
   resetSate({ commit }, payload) {
     commit('RESET_STATE', payload)
@@ -53,54 +53,48 @@ export default {
   //       .catch((error) => { reject(error) })
   //   })
   // },
-  addRecordListItem({ commit }, item) {
-    return new Promise((resolve, reject) => {
-      axios.post('/api/apps/coffe/recordLists/', { item })
-        .then((response) => {
-          commit('ADD_ITEM', Object.assign(item, { id: response.data.id }))
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-    })
-  },
+  // addRecordListItem({ commit }, item) {
+  //   return new Promise((resolve, reject) => {
+  //     axios.post('/api/apps/coffe/recordLists/', { item })
+  //       .then((response) => {
+  //         commit('ADD_ITEM', Object.assign(item, { id: response.data.id }))
+  //         resolve(response)
+  //       })
+  //       .catch((error) => { reject(error) })
+  //   })
+  // },
   async fetchSewingRecordListItems({ commit }, payload) {
-    console.log('payload', payload)
+    // console.log('payload', payload)
 
-    await axios.post('http://10.112.10.61:8000/api/device/history', {
+    await axios.post('http://10.112.10.127:1500/api/device/history', {
       device_name: payload.device_name,
       search_date: payload.search_date
     })
       .then((response) => {
-        commit('SET_SEWING_RECORD_LISTS', response.data)
+        // console.log('record', response.data.data)
+        const result = response.data.data.map(function (obj) {
+          return {
+            // inTime: obj.start_time,
+            // outTime: obj.end_time,
+            inTime: moment(new Date(obj.start_time)).format("HH:mm"),
+            outTime: moment(new Date(obj.end_time)).format("HH:mm"),
+            user: obj.user_name,
+            img: 'http://10.112.10.127:1500/static/img/' + obj.user_nickname + '.jpg',
+          };
+        });
+        commit('SET_SEWING_RECORD_LISTS', result)
       })
       .catch((error) => { error })
 
   },
-  // fetchSewingRecordListItems({ commit }, payload) {
-  //   console.log('payload', payload)
-  //   return new Promise((resolve, reject) => {
-  //     axios.post('http://10.112.10.127:1500/api/device/history', {
-  //       device_name: payload.device_name,
-  //       search_date: payload.search_date
-  //     })
-  //       .then((response) => {
-  //         commit('SET_SEWING_RECORD_LISTS', response.data)
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //     //FAKE
-  //     // axios.get('/api/apps/coffe/sewingRecordLists')
-  //     //   .then((response) => {
-  //     //     commit('SET_SEWING_RECORD_LISTS', response.data)
-  //     //     resolve(response)
-  //     //   })
-  //     //   .catch((error) => { reject(error) })
-  //   })
-  // },
   setStatus({ commit }, payload) {
     commit('SET_USER', payload)
   },
+  updateUsingMachine({ commit }, payload) {
+    commit('UPDATE_USING_MACHINE', payload)
+  },
   addSewingLog({ commit }, payload) {
+    console.log('addItem', payload)
     if (payload.userStatus === 'in') {
       // console.log(require('@/assets/images/employee/' + payload.userId + '.JPG'))
       var addItem = {

@@ -9,8 +9,6 @@
 
 export default {
   sewingLists: [],
-  sewingRecordLists: [],
-  usingMachine: {},
   styleList: {
     nomal: { fill: "#67C179" },
     warning: { fill: "#FFA35C" },

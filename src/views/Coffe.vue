@@ -1,5 +1,5 @@
 <template>
-    <div id="basic-card">
+    <div id="coffe-basic-card">
         <div class="vx-row">
             <!-- {{ coffeRecordLists }} -->
             <!-- {{ weekCoffeLists }} -->
@@ -451,7 +451,7 @@ export default {
         this.$store.registerModule("coffe", moduleCoffe);
         this.$store.dispatch("coffe/resetSate", this.initalState);
         this.initRfidWebSocket();
-        this.initButtonWebSocket();
+        // this.initButtonWebSocket();
         this.initElectWebSocket();
     },
     beforeDestroy: function () {
@@ -459,7 +459,7 @@ export default {
         clearInterval(this.counterInterval3000);
         this.$store.unregisterModule("coffe");
         this.rfidWebsocket.close();
-        this.buttonWebsocket.close();
+        // this.buttonWebsocket.close();
         this.electWebsocket.close();
     },
     mounted() {
@@ -665,13 +665,7 @@ export default {
     width: 100px;
     // border: 1px solid red;
 }
-#basic-card {
-    .overlay-card {
-        .vx-card__collapsible-content {
-            max-height: 485px;
-        }
-    }
-
+#coffe-basic-card {
     .user-card {
         height: 25vh;
     }

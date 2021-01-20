@@ -497,19 +497,22 @@ export default {
     methods: {
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/get_user"
+                "ws://10.112.10.127:1500/userlog/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
         },
         initButtonWebSocket() {
             this.buttonWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/button"
+                "ws://10.112.10.127:1500/button" +
+                    Math.random().toString(36).substring(7)
             );
             this.setButtonListener();
         },
         initElectWebSocket() {
             this.electWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/power/get_power"
+                "ws://10.112.10.127:1500/power/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setElectListener();
         },

@@ -2,7 +2,7 @@
     <div id="basic-card">
         <!-- {{ namespace }} -->
         <!-- {{ lineAreaElectricity }} -->
-        <!-- {{ usingMachine }} -->
+        {{ usingMachine }}
         <!-- {{ exitData }} -->
         <!-- {{ sewingRecordLists }} -->
         <div class="vx-row">
@@ -482,7 +482,7 @@ export default {
         this.$store.registerModule(this.namespace, moduleSewingInfo);
         this.$store.dispatch(this.namespace + "/resetSate", this.initalState);
 
-        // this.initSewingWebSocket();
+        this.initSewingWebSocket();
         this.initRfidWebSocket();
         // this.initElectWebSocket();
     },
@@ -504,10 +504,10 @@ export default {
             namespace: window.location.href.split("sewing/")[1],
         });
         //FAKE用
-        // this.fakeDataLoop(1500);
-        // this.counterInterval3000 = setInterval(() => {
-        //     this.resetElectricity();
-        // }, 1000 * 60 * 3.2);
+        this.fakeDataLoop(1500);
+        this.counterInterval3000 = setInterval(() => {
+            this.resetElectricity();
+        }, 1000 * 60 * 3.2);
     },
     beforeDestroy: function () {
         clearInterval(this.counterInterval3000);
@@ -594,19 +594,22 @@ export default {
         initSewingWebSocket() {
             // this.websocket = new WebSocket("ws://10.112.10.119:8765");
             this.sewingWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/ws/get_swp_count"
+                "ws://10.112.10.127:1500/swp/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setSewingListener();
         },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/get_user"
+                "ws://10.112.10.127:1500/userlog/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
         },
         initElectWebSocket() {
             this.electWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/power/get_power"
+                "ws://10.112.10.127:1500/power/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setElectListener();
         },

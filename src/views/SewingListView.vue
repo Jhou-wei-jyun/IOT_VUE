@@ -261,7 +261,8 @@ export default {
         // },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/get_user"
+                "ws://10.112.10.127:1500/userlog/" +
+                    Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
         },

@@ -657,9 +657,7 @@ export default {
                         userName: eventData.username,
                         userStatus: eventData.status,
                         machineStatus: eventData.power_device,
-                        checkTime: moment()
-                            .utc(eventData.timestamp)
-                            .format("HH:mm"),
+                        checkTime: moment().utc(eventData.timestamp),
                     });
                     // console.log(
                     //     "send before",

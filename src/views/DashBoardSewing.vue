@@ -524,7 +524,8 @@ export default {
             if (timestamp == null) {
                 return null;
             } else {
-                return moment().utc(timestamp).format("HH:mm");
+                console.log("checktime", moment(timestamp).format("HH:mm"));
+                return moment(timestamp).format("HH:mm");
             }
         },
         userFilter(status, usingMachine) {
@@ -541,18 +542,6 @@ export default {
         },
     },
     computed: {
-        // exitData: {
-        //     get() {
-        //         return this.$store.state.sewingLists.sewingLists;
-        //     },
-        //     set(value) {
-        //         console.log("set");
-        //         this.$store.commit(
-        //             this.namespace + "/UPDATE_USING_MACHINE",
-        //             value
-        //         );
-        //     },
-        // },
         usingMachine() {
             return this.$store.state[this.namespace].usingMachine;
         },

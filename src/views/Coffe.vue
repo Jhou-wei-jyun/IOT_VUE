@@ -145,7 +145,12 @@
                                                     <vs-avatar
                                                         :src="data[index].img"
                                                         size="30px"
-                                                        class="border-2 border-white border-solid -m-1"
+                                                        class="border-2 border-solid -m-1"
+                                                        style="
+                                                            border-color: red
+                                                                transparent red
+                                                                red; ;
+                                                        "
                                                     ></vs-avatar>
                                                 </vx-tooltip>
                                             </li>

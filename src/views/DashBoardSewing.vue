@@ -591,7 +591,7 @@ export default {
         // this.$store.commit(this.namespace + "/RESET_STATE");
         // this.$store.unregisterModule("sewingLists");
         this.$store.unregisterModule(this.namespace);
-        // this.sewingWebsocket.close();
+        this.sewingWebsocket.close();
         this.rfidWebsocket.close();
         // this.electWebsocket.close();
     },

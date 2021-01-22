@@ -2,7 +2,7 @@
     <div id="basic-card">
         <!-- {{ namespace }} -->
         <!-- {{ lineAreaElectricity }} -->
-        {{ usingMachine }}
+        <!-- {{ usingMachine }} -->
         <!-- {{ exitData }} -->
         <!-- {{ sewingRecordLists }} -->
         <div class="vx-row">
@@ -202,17 +202,90 @@
                                         <span>{{ data[index].inTime }}</span>
                                     </vs-td>
                                     <vs-td :data="data[index].user">
-                                        <ul class="users-liked user-list">
+                                        <ul
+                                            class="users-liked user-list"
+                                            style="display: block"
+                                        >
                                             <li>
                                                 <vx-tooltip
                                                     :text="data[index].user"
                                                     position="bottom"
                                                 >
-                                                    <vs-avatar
-                                                        :src="data[index].img"
-                                                        size="30px"
-                                                        class="border-2 border-white border-solid -m-1"
-                                                    ></vs-avatar>
+                                                    <div
+                                                        style="
+                                                            position: relative;
+                                                        "
+                                                    >
+                                                        <vs-avatar
+                                                            :src="
+                                                                data[index].img
+                                                            "
+                                                            size="30px"
+                                                            class="border-2 border-solid -m-1 border-animation"
+                                                            :style="
+                                                                getDiamondStyle(
+                                                                    data[index]
+                                                                        .ranking
+                                                                )
+                                                            "
+                                                            :class="
+                                                                getDiamondClass(
+                                                                    data[index]
+                                                                        .ranking
+                                                                )
+                                                            "
+                                                        ></vs-avatar>
+
+                                                        <svg
+                                                            version="1.1"
+                                                            id="圖層_1"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            x="0px"
+                                                            y="0px"
+                                                            viewBox="0 0 22.5 21.2"
+                                                            style="
+                                                                enable-background: new
+                                                                    0 0 22.5
+                                                                    21.2;
+                                                            "
+                                                            xml:space="preserve"
+                                                            class="right-bottom-icon"
+                                                            :style="
+                                                                getDiamondStyle(
+                                                                    data[index]
+                                                                        .ranking
+                                                                )
+                                                            "
+                                                        >
+                                                            <g>
+                                                                <g>
+                                                                    <path
+                                                                        class="st0"
+                                                                        d="M11.3,17.6C11.3,17.6,11.3,17.6,11.3,17.6c-0.2,0-0.3,0-0.4-0.1L2.6,9C2.5,9,2.5,8.9,2.5,8.8c0,0,0,0,0,0
+			c0-0.1,0.1-0.2,0.1-0.3l3.3-4.7c0,0,0,0,0,0l0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+			c0,0,0,0,0,0l0,0C6,3.6,6.1,3.6,6.2,3.6c0,0,0,0,0,0c0,0,0,0,0.1,0h4.9c0,0,0,0,0.1,0c0,0,0,0,0.1,0h4.9c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0.1,0,0.2,0.1,0.2,0.1v0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l3.3,4.7C20,8.5,20,8.6,20,8.7
+			c0,0,0,0,0,0C20,8.9,20,9,19.9,9l-8.3,8.5C11.5,17.6,11.4,17.6,11.3,17.6z M7.7,9.1l3.5,7.4l3.5-7.4l-3.6,0L7.7,9.1z M15.6,9.1
+			l-3,6.3l6.2-6.3L15.6,9.1z M3.7,9.1l6.2,6.3l-3-6.3L3.7,9.1z M8,8.4l3.3,0l3.2,0l-3.2-3.9L8,8.4z M16.5,4.9l-0.6,3.5l3.1,0
+			L16.5,4.9z M3.6,8.4l3.1,0L6,4.9L3.6,8.4z M6.7,4.3L7.4,8l3-3.7H6.7z M12.1,4.3l3,3.7l0.7-3.7H12.1z"
+                                                                    />
+                                                                </g>
+                                                                <g>
+                                                                    <path
+                                                                        class="st1"
+                                                                        d="M11.3,17.6C11.3,17.6,11.3,17.6,11.3,17.6c-0.2,0-0.3,0-0.4-0.1L2.6,9C2.5,9,2.5,8.9,2.5,8.8c0,0,0,0,0,0
+			c0-0.1,0.1-0.2,0.1-0.3l3.3-4.7c0,0,0,0,0,0l0,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+			c0,0,0,0,0,0l0,0C6,3.6,6.1,3.6,6.2,3.6c0,0,0,0,0,0c0,0,0,0,0.1,0h4.9c0,0,0,0,0.1,0c0,0,0,0,0.1,0h4.9c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0.1,0,0.2,0.1,0.2,0.1v0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0l3.3,4.7C20,8.5,20,8.6,20,8.7
+			c0,0,0,0,0,0C20,8.9,20,9,19.9,9l-8.3,8.5C11.5,17.6,11.4,17.6,11.3,17.6z M7.7,9.1l3.5,7.4l3.5-7.4l-3.6,0L7.7,9.1z M15.6,9.1
+			l-3,6.3l6.2-6.3L15.6,9.1z M3.7,9.1l6.2,6.3l-3-6.3L3.7,9.1z M8,8.4l3.3,0l3.2,0l-3.2-3.9L8,8.4z M16.5,4.9l-0.6,3.5l3.1,0
+			L16.5,4.9z M3.6,8.4l3.1,0L6,4.9L3.6,8.4z M6.7,4.3L7.4,8l3-3.7H6.7z M12.1,4.3l3,3.7l0.7-3.7H12.1z"
+                                                                    />
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </div>
                                                 </vx-tooltip>
                                             </li>
                                         </ul>
@@ -353,6 +426,7 @@ import moduleSewingInfo from "@/store/sewing-Info/moduleSewingInfo.js";
 export default {
     data() {
         return {
+            reConnect: true,
             sewingWebsocket: null,
             rfidWebsocket: null,
             electWebsocket: null,
@@ -463,6 +537,7 @@ export default {
             },
             namespace: null,
             device_id: null,
+            diamondColor: "#BA9477",
         };
     },
     components: {
@@ -510,6 +585,7 @@ export default {
         }, 1000 * 60 * 3.2);
     },
     beforeDestroy: function () {
+        this.reConnect = false;
         clearInterval(this.counterInterval3000);
         clearInterval(this.counterInterval10000);
         // this.$store.commit(this.namespace + "/RESET_STATE");
@@ -544,6 +620,9 @@ export default {
     computed: {
         usingMachine() {
             return this.$store.state[this.namespace].usingMachine;
+        },
+        classList() {
+            return this.$store.state[this.namespace].classList;
         },
         styleList() {
             return this.$store.state[this.namespace].styleList;
@@ -609,6 +688,10 @@ export default {
 
             this.sewingWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-針數");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-針數");
+                    this.initSewingWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息
@@ -641,6 +724,10 @@ export default {
 
             this.rfidWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-RFID");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-RFID");
+                    this.initRfidWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息
@@ -667,6 +754,7 @@ export default {
                         userId: eventData.card_id,
                         userName: eventData.username,
                         userStatus: eventData.status,
+                        userRanking: eventData.ranking,
                         checkTime: moment()
                             .utc(eventData.timestamp)
                             .format("HH:mm"),
@@ -692,6 +780,10 @@ export default {
 
             this.electWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-針車機電力");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-針車機電力");
+                    this.initElectWebSocket;
+                }
             };
 
             //接收 Server 發送的訊息
@@ -713,6 +805,30 @@ export default {
                 console.error("WebSocket連線錯誤-針車機電力");
                 console.error(`[error] ${error.message}`);
             };
+        },
+        getDiamondStyle(rank) {
+            switch (rank) {
+                case 1:
+                    return this.styleList.rank1;
+                case 2:
+                    return this.styleList.rank2;
+                case 3:
+                    return this.styleList.rank3;
+                default:
+                    return this.styleList.rank1;
+            }
+        },
+        getDiamondClass(rank) {
+            switch (rank) {
+                case 1:
+                    return this.classList.rank1;
+                case 2:
+                    return this.classList.rank2;
+                case 3:
+                    return this.classList.rank3;
+                default:
+                    return this.classList.rank1;
+            }
         },
         getStyle(machineStatus) {
             switch (machineStatus) {
@@ -770,6 +886,182 @@ export default {
 
     .log-card {
         height: 50vh;
+    }
+}
+.right-bottom-icon {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    width: 20px;
+    right: 0px;
+    bottom: 0px;
+}
+.rank3-enter-active {
+    animation: Rank3 1s 1 ease-in; /*IE*/
+    -moz-animation: Rank3 1s 1 ease-in; /*FireFox*/
+    -webkit-animation: Rank3 1s 1 ease-in; /*Chrome, Safari*/
+}
+.rank2-enter-active {
+    animation: Rank2 1s 1 ease-in; /*IE*/
+    -moz-animation: Rank2 1s 1 ease-in; /*FireFox*/
+    -webkit-animation: Rank2 1s 1 ease-in; /*Chrome, Safari*/
+}
+.rank1-enter-active {
+    animation: Rank1 1s 1 ease-in; /*IE*/
+    -moz-animation: Rank1 1s 1 ease-in; /*FireFox*/
+    -webkit-animation: Rank1 1s 1 ease-in; /*Chrome, Safari*/
+}
+@keyframes Rank3 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ffa75c white;
+    }
+    50% {
+        border-color: white white #ffa75c #ffa75c;
+    }
+    75% {
+        border-color: #ffa75c white #ffa75c #ffa75c;
+    }
+    100% {
+        border-color: #ffa75c;
+    }
+}
+@-moz-keyframes Rank3 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ffa75c white;
+    }
+    50% {
+        border-color: white white #ffa75c #ffa75c;
+    }
+    75% {
+        border-color: #ffa75c white #ffa75c #ffa75c;
+    }
+    100% {
+        border-color: #ffa75c;
+    }
+}
+@-webkit-keyframes Rank3 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ffa75c white;
+    }
+    50% {
+        border-color: white white #ffa75c #ffa75c;
+    }
+    75% {
+        border-color: #ffa75c white #ffa75c #ffa75c;
+    }
+    100% {
+        border-color: #ffa75c;
+    }
+}
+@keyframes Rank2 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white#BFBFBF white;
+    }
+    50% {
+        border-color: white white#BFBFBF#BFBFBF;
+    }
+    75% {
+        border-color: #bfbfbf white#BFBFBF#BFBFBF;
+    }
+    100% {
+        border-color: #bfbfbf;
+    }
+}
+@-moz-keyframes Rank2 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white#BFBFBF white;
+    }
+    50% {
+        border-color: white white#BFBFBF#BFBFBF;
+    }
+    75% {
+        border-color: #bfbfbf white#BFBFBF#BFBFBF;
+    }
+    100% {
+        border-color: #bfbfbf;
+    }
+}
+@-webkit-keyframes Rank2 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white#BFBFBF white;
+    }
+    50% {
+        border-color: white white#BFBFBF#BFBFBF;
+    }
+    75% {
+        border-color: #bfbfbf white#BFBFBF#BFBFBF;
+    }
+    100% {
+        border-color: #bfbfbf;
+    }
+}
+@keyframes Rank1 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ba9477 white;
+    }
+    50% {
+        border-color: white white #ba9477 #ba9477;
+    }
+    75% {
+        border-color: #ba9477 white #ba9477 #ba9477;
+    }
+    100% {
+        border-color: #ba9477;
+    }
+}
+@-moz-keyframes Rank1 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ba9477 white;
+    }
+    50% {
+        border-color: white white #ba9477 #ba9477;
+    }
+    75% {
+        border-color: #ba9477 white #ba9477 #ba9477;
+    }
+    100% {
+        border-color: #ba9477;
+    }
+}
+@-webkit-keyframes Rank1 {
+    0% {
+        border-color: white;
+    }
+    25% {
+        border-color: white white #ba9477 white;
+    }
+    50% {
+        border-color: white white #ba9477 #ba9477;
+    }
+    75% {
+        border-color: #ba9477 white #ba9477 #ba9477;
+    }
+    100% {
+        border-color: #ba9477;
     }
 }
 /*! rtl:end:ignore */

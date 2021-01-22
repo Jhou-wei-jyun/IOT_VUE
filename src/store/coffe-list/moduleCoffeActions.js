@@ -67,13 +67,7 @@ export default {
     commit('SET_DATETIME', payload)
   },
   setUsingMachine({ commit }, payload) {
-    var result = {
-      userStatus: payload.userStatus,
-      machineStatus: payload.machineStatus,
-      user: payload.userName,
-      checkTime: payload.checkTime,
-    }
-    commit('SET_USING_MACHINE', result)
+    commit('SET_USING_MACHINE', payload)
   },
   async addCoffeCount({ commit }, payload) {
     await commit('ADD_COFFE_COUNT_ITEM', payload)

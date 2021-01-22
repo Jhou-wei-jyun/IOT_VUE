@@ -85,10 +85,6 @@ export default {
         );
         state.supportTracker.series = [...state.supportTracker.series, percent]
     },
-    SET_USING_MACHINE(state, obj) {
-        // state.usingMachine = obj
-        state.usingMachine = { ...obj }
-    },
     SET_SEWING_RECORD_LISTS(state, sewingRecordLists) {
         // console.log('check', sewingRecordLists)
         state.sewingRecordLists = sewingRecordLists
@@ -137,6 +133,7 @@ export default {
                         device_status: machineValue.device_status,
                         user_name: machineValue.user_name,
                         used_time: machineValue.used_time,
+                        used_ranking: machineValue.used_ranking,
                     }
                     state.usingMachine = { ...result }
                     break

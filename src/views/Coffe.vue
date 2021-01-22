@@ -145,12 +145,7 @@
                                                     <vs-avatar
                                                         :src="data[index].img"
                                                         size="30px"
-                                                        class="border-2 border-solid -m-1"
-                                                        style="
-                                                            border-color: red
-                                                                transparent red
-                                                                red; ;
-                                                        "
+                                                        class="border-2 border-white border-solid -m-1"
                                                     ></vs-avatar>
                                                 </vx-tooltip>
                                             </li>
@@ -280,6 +275,7 @@ import moduleCoffe from "@/store/coffe-list/moduleCoffe.js";
 export default {
     data() {
         return {
+            reConnect: true,
             rfidWebsocket: null,
             buttonWebsocket: null,
             electWebsocket: null,
@@ -455,12 +451,14 @@ export default {
     created() {
         this.$store.registerModule("coffe", moduleCoffe);
         this.$store.dispatch("coffe/resetSate", this.initalState);
+
         this.initRfidWebSocket();
         // this.initButtonWebSocket();
         this.initElectWebSocket();
     },
     beforeDestroy: function () {
         //移除 vue instance 之前
+        this.reConnect = false;
         clearInterval(this.counterInterval3000);
         this.$store.unregisterModule("coffe");
         this.rfidWebsocket.close();
@@ -532,6 +530,10 @@ export default {
 
             this.rfidWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-咖啡機RFID");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-咖啡機RFID");
+                    this.initRfidWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息
@@ -543,9 +545,9 @@ export default {
                         userName: eventData.username,
                         userStatus: eventData.status,
                         machineStatus: eventData.power_device,
-                        checkTime: moment()
-                            .utc(eventData.timestamp)
-                            .format("HH:mm"),
+                        // checkTime: moment()
+                        //     .utc(eventData.timestamp)
+                        //     .format("HH:mm"),
                     });
                     //咖啡log獨立出來
                     // this.$store.dispatch("coffe/addCoffeLog", {
@@ -571,6 +573,10 @@ export default {
 
             this.buttonWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-咖啡機BUTTON");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-咖啡機BUTTON");
+                    this.initButtonWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息
@@ -609,7 +615,7 @@ export default {
             // }, 10000);
             this.counterInterval3000 = setInterval(() => {
                 this.resetElectricity();
-            }, 1000 * 60 * 3.2);
+            }, 1000 * 60 * 32);
             // this.counterInterval10000 = setInterval(() => {
             //     this.websocket.send(50);
             // }, 5000);
@@ -619,6 +625,10 @@ export default {
 
             this.electWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-咖啡機電力");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-咖啡機電力");
+                    this.initElectWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息

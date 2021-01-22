@@ -211,6 +211,7 @@ import moduleSewing from "@/store/sewing-list/moduleSewing.js";
 export default {
     data() {
         return {
+            reConnect: true,
             dashBoardUrl: "/dashboard/sewing",
         };
     },
@@ -227,6 +228,7 @@ export default {
         this.initRfidWebSocket();
     },
     beforeDestroy: function () {
+        this.reConnect = false;
         this.rfidWebsocket.close();
     },
     computed: {
@@ -273,6 +275,10 @@ export default {
 
             this.rfidWebsocket.onclose = () => {
                 console.log("WebSocket連線關閉-清單RFID");
+                if (this.reConnect === true) {
+                    console.log("嘗試WebSocket重新連線-清單RFID");
+                    this.initRfidWebSocket();
+                }
             };
 
             //接收 Server 發送的訊息

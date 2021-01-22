@@ -71,15 +71,16 @@ export default {
       search_date: payload.search_date
     })
       .then((response) => {
-        // console.log('record', response.data.data)
+        console.log('record', response.data.data)
         const result = response.data.data.map(function (obj) {
           return {
             // inTime: obj.start_time,
             // outTime: obj.end_time,
-            inTime: moment(new Date(obj.start_time)).format("HH:mm"),
-            outTime: moment(new Date(obj.end_time)).format("HH:mm"),
-            user: obj.user_name,
+            inTime: obj.start_time !== null ? moment(obj.start_time).format("HH:mm") : null,
+            outTime: obj.end_time !== null ? moment(obj.end_time).format("HH:mm") : null,
+            user: obj.user_nickname,
             img: 'http://10.112.10.127:1500/static/img/' + obj.user_nickname + '.jpg',
+            ranking: obj.user_ranking,
           };
         });
         commit('SET_SEWING_RECORD_LISTS', result)
@@ -103,6 +104,7 @@ export default {
         // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
         img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
         user: payload.userName,
+        ranking: payload.userRanking,
       };
       commit('ADD_SEWING_LOG_ITEM_IN', addItem)
     }

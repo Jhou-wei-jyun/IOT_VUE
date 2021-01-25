@@ -10,20 +10,24 @@
 import axios from '@/axios.js'
 
 export default {
-  addItem({ commit }, item) {
-    return new Promise((resolve, reject) => {
-      axios.post('/api/apps/coffe/coffeRecordLists/', { item })
-        .then((response) => {
-          commit('ADD_ITEM', Object.assign(item, { id: response.data.id }))
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
+  // addItem({ commit }, item) {
+  //   return new Promise((resolve, reject) => {
+  //     axios.post('/api/apps/coffe/coffeRecordLists/', { item })
+  //       .then((response) => {
+  //         commit('ADD_ITEM', Object.assign(item, { id: response.data.id }))
+  //         resolve(response)
+  //       })
+  //       .catch((error) => { reject(error) })
+  //   })
+  // },
+  fetchRecordListItems({ commit }, payload) {
+    return axios.post('http://10.112.10.127:1857/api/device/history', {
+      cafe_device_id: payload.cafe_device_id,
+      search_date: payload.search_date,
     })
-  },
-  fetchRecordListItems({ commit }) {
-    return axios.get('/api/apps/coffe/coffeRecordLists')
       .then((response) => {
-        commit('SET_RECORD_LISTS', response.data)
+
+        commit('SET_RECORD_LISTS', response.data.data)
       })
       .catch((error) => { console.log(error) })
   },
@@ -66,6 +70,7 @@ export default {
   },
   setUsingMachine({ commit }, payload) {
     let result = {
+      cardId: payload.cardId,
       checkTime: payload.checkTime,
       userStatus: payload.userStatus,
       img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
@@ -77,17 +82,16 @@ export default {
     return commit('ADD_COFFE_COUNT_ITEM', payload)
   },
   addCoffeLog({ commit }, payload) {
-    if (payload.userStatus === 'in') { //先增加杯數
-      var addItem = {
-        time: payload.checkTime,
-        coffe: payload.coffe,
-        // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
-        img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
-        name: payload.userName,
-      };
+    var addItem = {
+      card_id: payload.cardId,
+      time: payload.checkTime,
+      coffe: payload.coffe,
+      // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
+      img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
+      name: payload.userName,
+    };
 
-      commit('ADD_COFFE_LOG_ITEM', addItem)
-    }
+    commit('ADD_COFFE_LOG_ITEM', addItem)
 
   },
   resetElectricity({ commit }) {

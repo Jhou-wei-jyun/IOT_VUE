@@ -1,7 +1,7 @@
 <template>
     <div id="coffe-basic-card">
-        <button @click="addFakeData()">ADD_DATA</button>
-        {{ usingMachine }}
+        <!-- <button @click="addFakeData()">ADD_DATA</button>
+        {{ usingMachine }} -->
         <div class="vx-row">
             <!-- {{ coffeRecordLists }} -->
             <!-- {{ weekCoffeLists }} -->
@@ -70,11 +70,11 @@
                                     width="100"
                                     height="100"
                                 />
-                                <span>X杯</span>
+                                <span>{{ dayCoffeCount }}杯</span>
                             </div>
                         </div>
                         <div class="vx-col w-full sm:w-1/4 special-box">
-                            <h4>累積水量</h4>
+                            <h4>已使用水量</h4>
 
                             <div
                                 class="flex align-items-center justify-content-center mt-5"
@@ -85,7 +85,9 @@
                                     width="100"
                                     height="100"
                                 />
-                                <span>X ml</span>
+                                <span
+                                    >{{ (dayCoffeCount * 350) / 1000 }} L</span
+                                >
                             </div>
                         </div>
                         <div class="vx-col w-full sm:w-1/4">
@@ -100,7 +102,7 @@
                                     width="100"
                                     height="100"
                                 />
-                                <span>X 次</span>
+                                <span></span>
                             </div>
                         </div>
                     </div>
@@ -463,7 +465,7 @@ export default {
         this.$store.dispatch("coffe/resetSate", this.initalState);
 
         this.initRfidWebSocket();
-        // this.initButtonWebSocket();
+        this.initButtonWebSocket();
         this.initElectWebSocket();
     },
     beforeDestroy: function () {
@@ -486,6 +488,15 @@ export default {
     },
     computed: {
         //Coffe
+        dayCoffeCount() {
+            let sum = 0;
+            this.$store.state.coffe.dayCoffeCountBar.series[0].data.forEach(
+                (element) => {
+                    sum = element + sum;
+                }
+            );
+            return sum;
+        },
         dayCoffeCountBar() {
             return this.$store.state.coffe.dayCoffeCountBar;
         },
@@ -540,7 +551,7 @@ export default {
         },
         initButtonWebSocket() {
             this.buttonWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/button" +
+                "ws://10.112.10.127:1857/current_btn/" +
                     Math.random().toString(36).substring(7)
             );
             this.setButtonListener();
@@ -575,8 +586,9 @@ export default {
                 var eventData = JSON.parse(JSON.parse(event.data));
                 if (eventData.card_id) {
                     this.$store.dispatch("coffe/setUsingMachine", {
+                        cardId: eventData.card_id,
                         userName: eventData.username,
-                        userStatus: "in", //eventData.status
+                        userStatus: eventData.status,
                         checkTime: moment()
                             .utc(eventData.timestamp)
                             .format("HH:mm"),
@@ -604,17 +616,13 @@ export default {
             //接收 Server 發送的訊息
             this.buttonWebsocket.onmessage = (event) => {
                 console.log("WebSocket收到事件包-咖啡機BUTTON");
-                var eventData = JSON.parse(event.data);
-                if (eventData.card_id) {
-                    this.$store.dispatch("coffe/addCoffeLog", {
-                        userId: eventData.card_id,
-                        userName: eventData.username,
-                        userStatus: eventData.status,
-                        coffe: eventData.coffe,
-                        checkTime: moment()
-                            .utc(eventData.timestamp)
-                            .format("HH:mm"),
-                    });
+                var eventData = JSON.parse(JSON.parse(event.data));
+                console.log(eventData);
+                if (
+                    this.usingMachine.userStatus === "in" &&
+                    this.usingMachine.cardId
+                ) {
+                    this.addCoffeLog(eventData);
                 }
             };
             this.buttonWebsocket.onerror = function (error) {
@@ -687,7 +695,32 @@ export default {
             });
         },
         async fetchRecordListItems() {
-            await this.$store.dispatch("coffe/fetchRecordListItems");
+            await this.$store.dispatch("coffe/fetchRecordListItems", {
+                cafe_device_id: "1", //暫時寫死
+                search_date: moment().format("YYYY-MM-DD"),
+            });
+        },
+        async addCoffeLog(eventData) {
+            const payload = {
+                cardId: this.usingMachine.cardId,
+                userName: this.usingMachine.userName,
+                coffe:
+                    eventData.coffee_type == "1"
+                        ? "濃縮"
+                        : eventData.coffee_type == "2"
+                        ? "雙倍濃縮"
+                        : eventData.coffee_type == "6"
+                        ? "混水濃縮"
+                        : eventData.coffee_type == "7"
+                        ? "雙倍混水濃縮"
+                        : false,
+                checkTime: moment().utc(eventData.press_time).format("HH:mm"),
+            };
+            await this.$store
+                .dispatch("coffe/addCoffeCount", payload)
+                .then(() => {
+                    this.$store.dispatch("coffe/addCoffeLog", payload);
+                });
         },
     },
 };

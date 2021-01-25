@@ -9,6 +9,7 @@
 
 export default {
   sewingLists: [],
+  productList: [],
   styleList: {
     nomal: { fill: "#67C179" },
     warning: { fill: "#FFA35C" },

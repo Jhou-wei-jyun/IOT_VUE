@@ -173,10 +173,11 @@
                 </vx-card>
             </div>
         </div>
-        <!-- <div class="vx-row">
+        <!-- {{ productList }}
+        <div class="vx-row">
             <vx-card>
                 <table>
-                    <th colspan="1">產線</th>
+                    <th>產線</th>
                     <th>機台</th>
                     <th>製作項目</th>
                     <th></th>
@@ -262,6 +263,9 @@ export default {
         this.rfidWebsocket.close();
     },
     computed: {
+        productList() {
+            return this.$store.state.sewingLists.productList;
+        },
         sewingLists() {
             return this.$store.state.sewingLists.sewingLists;
         },
@@ -273,28 +277,9 @@ export default {
         },
     },
     methods: {
-        // async fetchProductLists() {
-        //     await this.$store.dispatch("sewingLists/fetchProductLists");
-        // },
-
-        // sendTestDataOut() {
-        //     this.$store.dispatch("sewingLists/setSewingListStatus", {
-        //         userName: "Phil",
-        //         userStatus: "out",
-        //         machineNo: "SB20002",
-        //         machineStatus: "off",
-        //         checkTime: moment(new Date()).format("HH:mm"),
-        //     });
-        // },
-        // sendTestDataIn() {
-        //     this.$store.dispatch("sewingLists/setSewingListStatus", {
-        //         userName: "Phil",
-        //         userStatus: "in",
-        //         machineNo: "SB20002",
-        //         machineStatus: "on",
-        //         checkTime: moment(new Date()).format("HH:mm"),
-        //     });
-        // },
+        async fetchProductLists() {
+            await this.$store.dispatch("sewingLists/fetchProductLists");
+        },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
                 "ws://10.112.10.127:1500/userlog/" +

@@ -33,6 +33,9 @@ export default {
         }
 
     },
+    SET_PRODUCT_LIST(state, payload) {
+        state.productList = payload;
+    },
 
 }
 

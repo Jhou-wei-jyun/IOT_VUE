@@ -260,7 +260,7 @@ const data = {
             ],
         },
     ],
-    sewingRecordLists: [
+    as: [
         {
 
             inTime: '18:10',
@@ -272,6 +272,41 @@ const data = {
 
         },
 
+    ],
+    productLists: [
+
+        {
+            lineNo: 'Line 001',
+            machineNo: 'SB20001',
+            project: 'X1',
+            target: [10, 20],
+            actuality: [10, 10],
+            usedUser: ['aaa', 'bbb'],
+        },
+        {
+            lineNo: 'Line 001',
+            machineNo: 'SB20002',
+            project: 'X1',
+            target: [10, 20],
+            actuality: [10, 10],
+            usedUser: ['aaa', 'bbb'],
+        },
+        {
+            lineNo: 'Line 002',
+            machineNo: 'SB20003',
+            project: 'X2',
+            target: [10, 20],
+            actuality: [10, 10],
+            usedUser: ['aaa', 'bbb'],
+        },
+        {
+            lineNo: 'Line 002',
+            machineNo: 'SB20004',
+            project: 'X2',
+            target: [10, 20],
+            actuality: [10, 10],
+            usedUser: ['aaa', 'bbb'],
+        },
     ],
 
 
@@ -316,5 +351,9 @@ mock.onGet('/api/apps/sewing/sewingLists').reply(() => {
 // GET : Get All Chats
 mock.onGet('/api/apps/coffe/sewingRecordLists').reply(() => {
     return [200, data.sewingRecordLists]
+})
+// GET : Get All Chats
+mock.onGet('/api/apps/sewing/productLists').reply(() => {
+    return [200, data.productLists]
 })
 

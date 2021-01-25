@@ -173,33 +173,62 @@
                 </vx-card>
             </div>
         </div>
-        <div class="vx-row">
-            <!-- <vx-card>
+        <!-- <div class="vx-row">
+            <vx-card>
+                <table>
+                    <th colspan="1">產線</th>
+                    <th>機台</th>
+                    <th>製作項目</th>
+                    <th></th>
+                    <th>08:00</th>
+                    <th>總計數</th>
+                    <th>成效</th>
+                    <th>操作人員</th>
 
-                <ag-grid-vue
-                    ref="agGridTable"
-                    :gridOptions="gridOptions"
-                    class="ag-theme-material w-100 my-4 ag-grid-table"
-                    :columnDefs="columnDefs"
-                    :defaultColDef="defaultColDef"
-                    :rowData="contacts"
-                    rowSelection="multiple"
-                    colResizeDefault="shift"
-                    :animateRows="true"
-                    :floatingFilter="true"
-                    :pagination="true"
-                    :paginationPageSize="paginationPageSize"
-                    :suppressPaginationPanel="true"
-                    :enableRtl="$vs.rtl"
-                >
-                </ag-grid-vue>
-                <vs-pagination
-                    :total="totalPages"
-                    :max="maxPageNumbers"
-                    v-model="currentPage"
-                />
-            </vx-card> -->
-        </div>
+                    <tr>
+                        <td rowspan="4">產線</td>
+                        <td rowspan="4">機台</td>
+                        <td rowspan="8">製作項目</td>
+                        <td rowspan="2">目標or實作</td>
+                        <td>number</td>
+                        <td rowspan="2">總針數</td>
+                        <td rowspan="4">成效</td>
+                        <td rowspan="4">操作人員</td>
+                    </tr>
+                    <tr>
+                        <td>number</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">實作</td>
+                        <td>number</td>
+                        <td rowspan="2">總針數</td>
+                    </tr>
+                    <tr>
+                        <td>number</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">產線</td>
+                        <td rowspan="4">機台</td>
+                        <td rowspan="2">實作</td>
+                        <td>number</td>
+                        <td rowspan="2">總針數</td>
+                        <td rowspan="4">成效</td>
+                        <td rowspan="4">操作人員</td>
+                    </tr>
+                    <tr>
+                        <td>number</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">實作</td>
+                        <td>number</td>
+                        <td rowspan="2">總針數</td>
+                    </tr>
+                    <tr>
+                        <td>number</td>
+                    </tr>
+                </table>
+            </vx-card>
+        </div> -->
     </div>
 </template>
 <script>
@@ -225,6 +254,7 @@ export default {
             moduleSewing.isRegistered = true;
         }
         this.$store.dispatch("sewingLists/fetchSewingItems");
+        // this.fetchProductLists();
         this.initRfidWebSocket();
     },
     beforeDestroy: function () {
@@ -243,6 +273,10 @@ export default {
         },
     },
     methods: {
+        // async fetchProductLists() {
+        //     await this.$store.dispatch("sewingLists/fetchProductLists");
+        // },
+
         // sendTestDataOut() {
         //     this.$store.dispatch("sewingLists/setSewingListStatus", {
         //         userName: "Phil",

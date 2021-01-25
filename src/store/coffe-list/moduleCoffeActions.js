@@ -21,24 +21,22 @@ export default {
     })
   },
   fetchRecordListItems({ commit }) {
-    return new Promise((resolve, reject) => {
-      axios.get('/api/apps/coffe/coffeRecordLists')
-        .then((response) => {
-          commit('SET_RECORD_LISTS', response.data)
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-    })
+    return axios.get('/api/apps/coffe/coffeRecordLists')
+      .then((response) => {
+        commit('SET_RECORD_LISTS', response.data)
+      })
+      .catch((error) => { console.log(error) })
   },
-  fetchDayCoffeCount({ commit }) {
-    return new Promise((resolve, reject) => {
-      axios.get('/api/apps/coffe/cups')
-        .then((response) => {
-          commit('SET_DAY_COFFE_COUNT', response.data)
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
+  fetchDayCoffeCount({ commit }, payload) {
+    return axios.post('http://10.112.10.127:1857/api/cafe_numbers/', {
+      cafe_device_id: payload.cafe_device_id,
+      search_date: payload.search_date,
     })
+      .then((response) => {
+        console.log('fetchDayCoffeCount', response.data)
+        commit('SET_DAY_COFFE_COUNT', response.data)
+      })
+      .catch((error) => { console.log(error) })
   },
   fetchWeekCoffeLists({ commit }) {
     return new Promise((resolve, reject) => {
@@ -67,25 +65,30 @@ export default {
     commit('SET_DATETIME', payload)
   },
   setUsingMachine({ commit }, payload) {
-    commit('SET_USING_MACHINE', payload)
+    let result = {
+      checkTime: payload.checkTime,
+      userStatus: payload.userStatus,
+      img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
+      userName: payload.userName,
+    };
+    commit('SET_USING_MACHINE', result)
   },
-  async addCoffeCount({ commit }, payload) {
-    await commit('ADD_COFFE_COUNT_ITEM', payload)
-
+  addCoffeCount({ commit }, payload) {
+    return commit('ADD_COFFE_COUNT_ITEM', payload)
   },
-  async addCoffeLog({ commit }, payload) {
-    await dispatch('addCoffeCount', payload) //先增加杯數
-    if (payload.userStatus === 'in') {
+  addCoffeLog({ commit }, payload) {
+    if (payload.userStatus === 'in') { //先增加杯數
       var addItem = {
-        inTime: payload.checkTime,
+        time: payload.checkTime,
         coffe: payload.coffe,
         // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
         img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
-        user: payload.userName,
+        name: payload.userName,
       };
 
-      await commit('ADD_COFFE_LOG_ITEM', addItem)
+      commit('ADD_COFFE_LOG_ITEM', addItem)
     }
+
   },
   resetElectricity({ commit }) {
     commit('RESET_ELECTRICITY')

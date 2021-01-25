@@ -92,7 +92,7 @@ export default {
     commit('SET_USER', payload)
   },
   updateUsingMachine({ commit }, payload) {
-    commit('UPDATE_USING_MACHINE', payload)
+    return commit('UPDATE_USING_MACHINE', payload)
   },
   addSewingLog({ commit }, payload) {
     console.log('addItem', payload)

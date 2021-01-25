@@ -9,11 +9,11 @@
 import moment from "moment";
 import initialState from "./data.js"
 export default {
-  SET_DAY_COFFE_COUNT(state, dayCoffeCountObj) {
-    dayCoffeCountObj.forEach(element => {
+  SET_DAY_COFFE_COUNT(state, payload) {
+    for (const [key, value] of Object.entries(payload)) {
       state.dayCoffeCountBar.series[0].data = [
         ...state.dayCoffeCountBar.series[0].data,
-        element.count,
+        value,
       ];
       state.dayCoffeCountBar.chartOptions = {
         ...state.dayCoffeCountBar.chartOptions,
@@ -22,13 +22,12 @@ export default {
             categories: [
               ...state.dayCoffeCountBar.chartOptions.xaxis
                 .categories,
-              element.coffeCup,
+              key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
             ],
           },
         },
       };
-    });
-
+    }
   },
   SET_WEEK_COFFE_LISTS(state, weekCoffeLists) {
     state.weekCoffeLists = weekCoffeLists
@@ -140,9 +139,12 @@ export default {
     state.coffeRecordLists.unshift(addItem)
   },
   ADD_COFFE_COUNT_ITEM(state, addItem) {
-    let index = state.dayCoffeCountBar.chartOptions.xaxis.categories.indexOf(addItem.coffe);
+    const index = state.dayCoffeCountBar.chartOptions.xaxis.categories.indexOf(addItem.coffe);
     if (index !== (-1)) {
       state.dayCoffeCountBar.series[0].data[index] = state.dayCoffeCountBar.series[0].data[index] + 1
+      state.dayCoffeCountBar.series = [{
+        data: state.dayCoffeCountBar.series[0].data
+      }]
     }
   }
 

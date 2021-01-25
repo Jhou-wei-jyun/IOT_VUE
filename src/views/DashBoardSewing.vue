@@ -551,8 +551,7 @@ export default {
         if (!moduleSewing.isRegistered) {
             this.$store.registerModule("sewingLists", moduleSewing);
             moduleSewing.isRegistered = true;
-            this.$store.dispatch("sewingLists/fetchSewingItems");
-            // console.log("init", this.$store.state.sewingLists.sewingLists);
+            this.fetchSewingItems();
         }
         this.$store.registerModule(this.namespace, moduleSewingInfo);
         this.$store.dispatch(this.namespace + "/resetSate", this.initalState);
@@ -561,23 +560,14 @@ export default {
         this.initRfidWebSocket();
         // this.initElectWebSocket();
     },
-    async mounted() {
+    mounted() {
         // this.$store.dispatch(
         //     this.namespace + "/fetchSewingTargetItem",
         //     window.location.href.split("sewing/")[1]
         // );
-        await this.$store.dispatch(
-            this.namespace + "/fetchSewingRecordListItems",
-            {
-                search_date: moment().format("YYYY-MM-DD hh:mm:ss"),
-                device_name: window.location.href.split("sewing/")[1],
-            }
-        );
-        // console.log("init2", this.$store.state.sewingLists.sewingLists);
-        await this.$store.dispatch(this.namespace + "/updateUsingMachine", {
-            updateData: this.$store.state.sewingLists.sewingLists,
-            namespace: window.location.href.split("sewing/")[1],
-        });
+        this.fetchSewingRecordListItems();
+        this.updateUsingMachine();
+
         //FAKE用
         this.fakeDataLoop(1500);
         this.counterInterval3000 = setInterval(() => {
@@ -805,6 +795,29 @@ export default {
                 console.error("WebSocket連線錯誤-針車機電力");
                 console.error(`[error] ${error.message}`);
             };
+        },
+        async fetchSewingItems() {
+            await this.$store
+                .dispatch("sewingLists/fetchSewingItems")
+                .then(() => {
+                    this.updateUsingMachine();
+                });
+        },
+
+        async fetchSewingRecordListItems() {
+            await this.$store.dispatch(
+                this.namespace + "/fetchSewingRecordListItems",
+                {
+                    search_date: moment().format("YYYY-MM-DD hh:mm:ss"),
+                    device_name: window.location.href.split("sewing/")[1],
+                }
+            );
+        },
+        async updateUsingMachine() {
+            await this.$store.dispatch(this.namespace + "/updateUsingMachine", {
+                updateData: this.$store.state.sewingLists.sewingLists,
+                namespace: window.location.href.split("sewing/")[1],
+            });
         },
         getDiamondStyle(rank) {
             switch (rank) {

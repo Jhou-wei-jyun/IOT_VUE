@@ -1,5 +1,7 @@
 <template>
     <div id="coffe-basic-card">
+        <button @click="addFakeData()">ADD_DATA</button>
+        {{ usingMachine }}
         <div class="vx-row">
             <!-- {{ coffeRecordLists }} -->
             <!-- {{ weekCoffeLists }} -->
@@ -9,10 +11,18 @@
             <!-- CARD 1: 操作人員 -->
 
             <div class="vx-col w-full md:w-1/4 lg:w-1/4 xl:w-1/4 mb-base">
-                <vx-card title="正在使用" class="user-card">
+                <vx-card
+                    :title="userUsingCheck(usingMachine.userStatus)"
+                    class="user-card"
+                >
                     <!-- CARD 1: 操作人員 -->
-                    <div class="flex align-items-center">
-                        <h1>{{ usingMachine.user }}</h1>
+                    <div class="flex align-items-center justify-content-around">
+                        <h1>{{ usingMachine.userName }}</h1>
+                        <img
+                            width="100"
+                            style="border-radius: 50%"
+                            :src="usingMachine.img"
+                        />
                     </div>
                 </vx-card>
             </div>
@@ -25,7 +35,7 @@
 
                             <div
                                 class="flex align-items-center justify-content-center mt-5"
-                                v-if="usingMachine.machineStatus === 'on'"
+                                v-if="usingMachine.userStatus === 'in'"
                             >
                                 <img
                                     src="@/assets/images/coffee-icons/icon01.svg"
@@ -469,8 +479,9 @@ export default {
         // this.$store.dispatch(
         //     "coffe/fetchSewingTargetItem"
         // );
-        this.$store.dispatch("coffe/fetchDayCoffeCount");
-        this.$store.dispatch("coffe/fetchRecordListItems");
+        this.fetchDayCoffeCount();
+        this.fetchRecordListItems();
+
         this.$store.dispatch("coffe/fetchWeekCoffeLists");
     },
     computed: {
@@ -498,9 +509,31 @@ export default {
         },
     },
     methods: {
+        async addFakeData() {
+            // this.$store.dispatch("coffe/setUsingMachine", {
+            //     user: "eventData.username",
+            //     userStatus: "out",
+            //     machineStatus: "on",
+            //     // checkTime: moment()
+            //     //     .utc(eventData.timestamp)
+            //     //     .format("HH:mm"),
+            // });
+            const payload = {
+                userId: "as123",
+                userName: "Phil",
+                userStatus: "in",
+                coffe: "雙倍混水濃縮",
+                checkTime: moment().format("HH:mm"),
+            };
+            await this.$store
+                .dispatch("coffe/addCoffeCount", payload)
+                .then(() => {
+                    this.$store.dispatch("coffe/addCoffeLog", payload);
+                });
+        },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/" +
+                "ws://10.112.10.127:1857/userlog/" +
                     Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
@@ -539,26 +572,15 @@ export default {
             //接收 Server 發送的訊息
             this.rfidWebsocket.onmessage = (event) => {
                 console.log("WebSocket收到事件包-咖啡機RFID");
-                var eventData = JSON.parse(event.data);
+                var eventData = JSON.parse(JSON.parse(event.data));
                 if (eventData.card_id) {
                     this.$store.dispatch("coffe/setUsingMachine", {
                         userName: eventData.username,
-                        userStatus: eventData.status,
-                        machineStatus: eventData.power_device,
-                        // checkTime: moment()
-                        //     .utc(eventData.timestamp)
-                        //     .format("HH:mm"),
+                        userStatus: "in", //eventData.status
+                        checkTime: moment()
+                            .utc(eventData.timestamp)
+                            .format("HH:mm"),
                     });
-                    //咖啡log獨立出來
-                    // this.$store.dispatch("coffe/addCoffeLog", {
-                    //     userId: eventData.card_id,
-                    //     userName: eventData.username,
-                    //     userStatus: eventData.status,
-                    //     coffe: eventData.coffe,
-                    //     checkTime: moment()
-                    //         .utc(eventData.timestamp)
-                    //         .format("HH:mm"),
-                    // });
                 }
             };
             this.rfidWebsocket.onerror = function (error) {
@@ -648,6 +670,25 @@ export default {
                 console.error(`[error] ${error.message}`);
             };
         },
+        userUsingCheck(status) {
+            switch (status) {
+                case "in":
+                    return "正在使用";
+                case "out":
+                    return "前一位使用者";
+                default:
+                    return "正在使用";
+            }
+        },
+        async fetchDayCoffeCount() {
+            await this.$store.dispatch("coffe/fetchDayCoffeCount", {
+                cafe_device_id: "1", //暫時寫死
+                search_date: moment().format("YYYY-MM-DD"),
+            });
+        },
+        async fetchRecordListItems() {
+            await this.$store.dispatch("coffe/fetchRecordListItems");
+        },
     },
 };
 </script>
@@ -669,6 +710,10 @@ export default {
 .flex.justify-content-center {
     display: flex;
     justify-content: center;
+}
+.flex.justify-content-around {
+    display: flex;
+    justify-content: space-around;
 }
 
 .float-number {

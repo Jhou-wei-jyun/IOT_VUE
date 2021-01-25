@@ -10,8 +10,8 @@
 import axios from '@/axios.js'
 
 export default {
-  async fetchSewingItems({ commit }) {
-    await axios.post('http://10.112.10.127:1500/api/factory')
+  fetchSewingItems({ commit }) {
+    return axios.post('http://10.112.10.127:1500/api/factory')
       .then((response) => {
         // console.log('fetchSewingItems', response.data.data)
         commit('SET_SEWINGS', response.data.data)

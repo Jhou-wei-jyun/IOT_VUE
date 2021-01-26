@@ -182,50 +182,55 @@
                     <th>製作項目</th>
                     <th></th>
                     <th>08:00</th>
+                    <th>09:00</th>
                     <th>總計數</th>
                     <th>成效</th>
                     <th>操作人員</th>
 
-                    <tr>
-                        <td rowspan="4">產線</td>
-                        <td rowspan="4">機台</td>
-                        <td rowspan="8">製作項目</td>
-                        <td rowspan="2">目標or實作</td>
-                        <td>number</td>
-                        <td rowspan="2">總針數</td>
-                        <td rowspan="4">成效</td>
-                        <td rowspan="4">操作人員</td>
-                    </tr>
-                    <tr>
-                        <td>number</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2">實作</td>
-                        <td>number</td>
-                        <td rowspan="2">總針數</td>
-                    </tr>
-                    <tr>
-                        <td>number</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="4">產線</td>
-                        <td rowspan="4">機台</td>
-                        <td rowspan="2">實作</td>
-                        <td>number</td>
-                        <td rowspan="2">總針數</td>
-                        <td rowspan="4">成效</td>
-                        <td rowspan="4">操作人員</td>
-                    </tr>
-                    <tr>
-                        <td>number</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2">實作</td>
-                        <td>number</td>
-                        <td rowspan="2">總針數</td>
-                    </tr>
-                    <tr>
-                        <td>number</td>
+                    <tr v-for="(item, index) in productList" :key="index">
+                        <td
+                            :rowspan="item.lineNo_count"
+                            v-if="
+                                !index
+                                    ? true
+                                    : productList[index - 1].lineNo ==
+                                      item.lineNo
+                                    ? ''
+                                    : true
+                            "
+                            v-text="item.lineNo"
+                        ></td>
+                        <td
+                            rowspan="2"
+                            v-if="
+                                !index
+                                    ? true
+                                    : productList[index - 1].machineNo ==
+                                      item.machineNo
+                                    ? ''
+                                    : true
+                            "
+                            v-text="item.machineNo"
+                        ></td>
+
+                        <td
+                            :rowspan="item.project_count"
+                            v-if="
+                                !index
+                                    ? true
+                                    : productList[index - 1].project ==
+                                      item.project
+                                    ? ''
+                                    : true
+                            "
+                            v-text="item.project"
+                        ></td>
+                        <td v-if="index % 2 !== 0">目標</td>
+                        <td v-else>實際</td>
+                        <td v-text="item.target"></td>
+                        <td v-text="item.target"></td>
+                        <td rowspan="2">成效</td>
+                        <td rowspan="2">操作人員</td>
                     </tr>
                 </table>
             </vx-card>

@@ -26,7 +26,7 @@ export default {
       search_date: payload.search_date,
     })
       .then((response) => {
-
+        console.log('record', response.data.data)
         commit('SET_RECORD_LISTS', response.data.data)
       })
       .catch((error) => { console.log(error) })

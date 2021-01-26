@@ -13,7 +13,7 @@ export default {
   fetchSewingItems({ commit }) {
     return axios.post('http://10.112.10.127:1500/api/factory')
       .then((response) => {
-        console.log('fetchSewingItems', response.data.data)
+        // console.log('fetchSewingItems', response.data.data)
         commit('SET_SEWINGS', response.data.data)
       })
       .catch((error) => { error })
@@ -27,41 +27,33 @@ export default {
   setSewingListStatus({ commit }, payload) {
     commit('SET_SEWING_LIST_STATUS', payload)
   },
-  // fetchProductLists({ commit }) {
-  //   return axios.get('/api/apps/sewing/productLists')
-  //     .then((response) => {
-  //       console.log('response', response.data)
-  //       let lineNo_count = {}
-  //       let machineNo_count = {}
-  //       let project_count = {}
-  //       let target_count = {}
-  //       let actuality_count = {}
-  //       let usedUser_count = {}
-  //       response.data.forEach(e => {
-  //         lineNo_count[e.lineNo] = 0
-  //         if (e.lineNo in lineNo_count) {
-  //           console.log('1')
-  //           lineNo_count[e.lineNo] = lineNo_count[e.lineNo] + 1
-  //         }
-
-  //       });
-
-  //       console.log('result', lineNo_count)
+  fetchProductLists({ commit }) {
+    return axios.get('/api/apps/sewing/productLists')
+      .then((response) => {
 
 
-  //       // response.data.forEach(element => {
-  //       //   ...element = {...element,{}};
-  //       // });
-  //       // commit('SET_PRODUCT_LIST', response.data)
-  //     })
-  //     .catch((error) => { error })
-  //   // await axios.get('/api/apps/sewing/sewingLists')
-  //   //   .then((response) => {
-  //   //     console.log('getData', response.data)
-  //   //     commit('SET_SEWINGS', response.data)
-  //   //   })
-  //   //   .catch((error) => { error })
-  // },
+        let newArray = []
+        response.data.forEach(element => {
+          newArray = [...newArray, element]
+          newArray = [...newArray, element]
+        });
+        let lineNo_count = {}
+        let project_count = {}
+
+        newArray.forEach(element => {
+          project_count[element.project] = project_count[element.project] ? project_count[element.project] + 1 : 1;
+          lineNo_count[element.lineNo] = lineNo_count[element.lineNo] ? lineNo_count[element.lineNo] + 1 : 1;
+        });
+        newArray.forEach(element => {
+          element = Object.assign(element, { project_count: project_count[element.project] })
+          element = Object.assign(element, { lineNo_count: lineNo_count[element.lineNo] })
+        });
+        console.log(newArray)
+
+        commit('SET_PRODUCT_LIST', newArray)
+      })
+      .catch((error) => { error })
+  },
 }
 
 

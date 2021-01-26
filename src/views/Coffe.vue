@@ -474,7 +474,7 @@ export default {
         clearInterval(this.counterInterval3000);
         this.$store.unregisterModule("coffe");
         this.rfidWebsocket.close();
-        // this.buttonWebsocket.close();
+        this.buttonWebsocket.close();
         this.electWebsocket.close();
     },
     mounted() {

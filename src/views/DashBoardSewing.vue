@@ -590,7 +590,6 @@ export default {
             if (timestamp == null) {
                 return null;
             } else {
-                console.log("checktime", moment(timestamp).format("HH:mm"));
                 return moment(timestamp).format("HH:mm");
             }
         },
@@ -734,7 +733,9 @@ export default {
                         userName: eventData.username,
                         userStatus: eventData.status,
                         machineStatus: eventData.power_device,
-                        checkTime: moment().utc(eventData.timestamp),
+                        checkTime: moment(eventData.timestamp * 1000)
+                            .utc()
+                            .local(),
                     });
                     // console.log(
                     //     "send before",
@@ -745,8 +746,9 @@ export default {
                         userName: eventData.username,
                         userStatus: eventData.status,
                         userRanking: eventData.ranking,
-                        checkTime: moment()
-                            .utc(eventData.timestamp)
+                        checkTime: moment(eventData.timestamp * 1000)
+                            .utc()
+                            .local()
                             .format("HH:mm"),
                     });
                     // console.log(

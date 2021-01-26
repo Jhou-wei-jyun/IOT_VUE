@@ -13,7 +13,7 @@ export default {
   fetchSewingItems({ commit }) {
     return axios.post('http://10.112.10.127:1500/api/factory')
       .then((response) => {
-        // console.log('fetchSewingItems', response.data.data)
+        console.log('fetchSewingItems', response.data.data)
         commit('SET_SEWINGS', response.data.data)
       })
       .catch((error) => { error })

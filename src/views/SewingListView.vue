@@ -312,9 +312,9 @@ export default {
                         userStatus: eventData.status,
                         machineNo: eventData.device_id,
                         machineStatus: eventData.power_device,
-                        checkTime: moment()
-                            .utc(eventData.timestamp)
-                            .format("HH:mm"),
+                        checkTime: moment(eventData.timestamp * 1000)
+                            .utc()
+                            .local(),
                     });
                 }
             };

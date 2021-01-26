@@ -132,7 +132,7 @@ export default {
                         user_status: machineValue.user_status,
                         device_status: machineValue.device_status,
                         user_name: machineValue.user_name,
-                        used_time: machineValue.used_time,
+                        used_time: moment(machineValue.used_time).local(),
                         used_ranking: machineValue.used_ranking,
                     }
                     state.usingMachine = { ...result }

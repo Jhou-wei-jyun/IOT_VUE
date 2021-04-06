@@ -20,7 +20,7 @@ const userDefaults = {
   uid: 0,          // From Auth
   displayName: "Phil Jhou", // From Auth
   about: "Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.",
-  photoURL: 'http://10.112.10.127:1500/static/img/Phil.jpg', // From Auth
+  photoURL: 'http://10.112.10.69:1500/static/img/Phil.jpg', // From Auth
   status: "online",
   userRole: "admin"
 }

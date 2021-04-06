@@ -38,7 +38,7 @@ export default {
       recordData = [...recordData, {
         card_id: element.user_card_uid,
         name: element.user_nickname,
-        img: 'http://10.112.10.127:1500/static/img/' + element.user_nickname + '.jpg',
+        img: 'http://10.112.10.69:1500/static/img/' + element.user_nickname + '.jpg',
         time: moment(element.press_time).format('HH:mm'),
         coffe: element.coffee_type == 1 ? '濃縮' : element.coffee_type == 2 ? '雙倍濃縮' : element.coffee_type == 6 ? '混水濃縮' : element.coffee_type == 7 ? '雙倍混水濃縮' : false,
       }]

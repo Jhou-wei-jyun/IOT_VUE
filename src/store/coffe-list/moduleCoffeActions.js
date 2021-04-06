@@ -21,7 +21,7 @@ export default {
   //   })
   // },
   fetchRecordListItems({ commit }, payload) {
-    return axios.post('http://10.112.10.127:1857/api/device/history', {
+    return axios.post('http://10.112.10.69:1857/api/device/history', {
       cafe_device_id: payload.cafe_device_id,
       search_date: payload.search_date,
     })
@@ -32,7 +32,7 @@ export default {
       .catch((error) => { console.log(error) })
   },
   fetchDayCoffeCount({ commit }, payload) {
-    return axios.post('http://10.112.10.127:1857/api/cafe_numbers/', {
+    return axios.post('http://10.112.10.69:1857/api/cafe_numbers/', {
       cafe_device_id: payload.cafe_device_id,
       search_date: payload.search_date,
     })
@@ -73,7 +73,7 @@ export default {
       cardId: payload.cardId,
       checkTime: payload.checkTime,
       userStatus: payload.userStatus,
-      img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
+      img: 'http://10.112.10.69:1500/static/img/' + payload.userName + '.jpg',
       userName: payload.userName,
     };
     commit('SET_USING_MACHINE', result)
@@ -87,7 +87,7 @@ export default {
       time: payload.checkTime,
       coffe: payload.coffe,
       // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
-      img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
+      img: 'http://10.112.10.69:1500/static/img/' + payload.userName + '.jpg',
       name: payload.userName,
     };
 

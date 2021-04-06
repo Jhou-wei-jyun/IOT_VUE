@@ -544,21 +544,21 @@ export default {
         },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1857/userlog/" +
+                "ws://10.112.10.69:1857/userlog/" +
                     Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
         },
         initButtonWebSocket() {
             this.buttonWebsocket = new WebSocket(
-                "ws://10.112.10.127:1857/current_btn/" +
+                "ws://10.112.10.69:1857/current_btn/" +
                     Math.random().toString(36).substring(7)
             );
             this.setButtonListener();
         },
         initElectWebSocket() {
             this.electWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/power/" +
+                "ws://10.112.10.69:1500/power/" +
                     Math.random().toString(36).substring(7)
             );
             this.setElectListener();

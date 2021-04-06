@@ -651,21 +651,21 @@ export default {
         initSewingWebSocket() {
             // this.websocket = new WebSocket("ws://10.112.10.119:8765");
             this.sewingWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/swp/" +
+                "ws://10.112.10.69:1500/swp/" +
                     Math.random().toString(36).substring(7)
             );
             this.setSewingListener();
         },
         initRfidWebSocket() {
             this.rfidWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/userlog/" +
+                "ws://10.112.10.69:1500/userlog/" +
                     Math.random().toString(36).substring(7)
             );
             this.setRfidListener();
         },
         initElectWebSocket() {
             this.electWebsocket = new WebSocket(
-                "ws://10.112.10.127:1500/power/" +
+                "ws://10.112.10.69:1500/power/" +
                     Math.random().toString(36).substring(7)
             );
             this.setElectListener();

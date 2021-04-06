@@ -66,7 +66,7 @@ export default {
   async fetchSewingRecordListItems({ commit }, payload) {
     // console.log('payload', payload)
 
-    await axios.post('http://10.112.10.127:1500/api/device/history', {
+    await axios.post('http://10.112.10.69:1500/api/device/history', {
       device_name: payload.device_name,
       search_date: payload.search_date
     })
@@ -79,7 +79,7 @@ export default {
             inTime: obj.start_time !== null ? moment(obj.start_time).format("HH:mm") : null,
             outTime: obj.end_time !== null ? moment(obj.end_time).format("HH:mm") : null,
             user: obj.user_nickname,
-            img: 'http://10.112.10.127:1500/static/img/' + obj.user_nickname + '.jpg',
+            img: 'http://10.112.10.69:1500/static/img/' + obj.user_nickname + '.jpg',
             ranking: obj.user_ranking,
           };
         });
@@ -102,7 +102,7 @@ export default {
         inTime: payload.checkTime,
         outTime: null,
         // img: require('@/assets/images/employee/' + payload.userId + '.jpg'),
-        img: 'http://10.112.10.127:1500/static/img/' + payload.userName + '.jpg',
+        img: 'http://10.112.10.69:1500/static/img/' + payload.userName + '.jpg',
         user: payload.userName,
         ranking: payload.userRanking,
       };

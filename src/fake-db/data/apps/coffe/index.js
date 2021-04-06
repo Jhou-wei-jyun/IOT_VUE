@@ -24,7 +24,7 @@ const data = {
         {
 
             'time': '18:10',
-            'img': 'http://10.112.10.127:1500/static/img/Phil.jpg',
+            'img': 'http://10.112.10.69:1500/static/img/Phil.jpg',
             'name': '123',
             'coffe': '雙倍混水濃縮',
 

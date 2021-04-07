@@ -194,7 +194,14 @@
 
         <div class="vx-row">
             <div class="vx-col w-full md:w-1/3 lg:w-1/3 xl:w-1/3 mb-base">
-                <vx-card title="本週累積沖泡數" class="log-card">
+                <vx-card :title="coffeDonutTitle" class="log-card">
+                    <!-- <change-time-duration-dropdown /> -->
+                    <template slot="actions">
+                        <change-time-duration-dropdown
+                            :timeDuration="coffeDonutTimeDuration"
+                            @timeDurationChanged="coffeDonutChanged"
+                        />
+                    </template>
                     <div>
                         <vue-apex-charts
                             class="mt-6 mb-8 a"
@@ -212,10 +219,19 @@
                 </vx-card>
             </div>
             <div class="vx-col w-full md:w-1/3 lg:w-1/3 xl:w-1/3 mb-base">
-                <vx-card title="本週沖泡排名" class="log-card overflow-hidden">
+                <vx-card
+                    :title="weekCoffeListsTitle"
+                    class="log-card overflow-hidden"
+                >
+                    <template slot="actions">
+                        <change-time-duration-dropdown
+                            :timeDuration="weekCoffeListsTimeDuration"
+                            @timeDurationChanged="weekCoffeListsChanged"
+                        />
+                    </template>
                     <div slot="no-body" class="mt-4 text-center">
                         <vs-table
-                            max-items="5"
+                            max-items="3"
                             pagination
                             :data="weekCoffeLists"
                             class="table-dark-inverted"
@@ -283,10 +299,19 @@ import VxTimeline from "@/components/timeline/VxTimeline";
 import apexChatData from "./charts-and-maps/charts/apex-charts/apexChartData.js";
 // import moduleIot from "@/store/iot/moduleIot.js";
 import moduleCoffe from "@/store/coffe-list/moduleCoffe.js";
+import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.vue";
 
 export default {
     data() {
         return {
+            //
+            coffeDonutTimeDuration: "week",
+            weekCoffeListsTimeDuration: "week",
+            weekCoffeListsTitle: "本週沖泡排名",
+            coffeDonutTitle: "本週累積沖泡數",
+            //
+            isTest: false,
+            //
             reConnect: true,
             rfidWebsocket: null,
             buttonWebsocket: null,
@@ -357,14 +382,9 @@ export default {
                     },
                 },
                 coffeDonut: {
-                    series: [10, 6, 2, 5],
+                    series: [],
                     chartOptions: {
-                        labels: [
-                            "濃縮",
-                            "雙倍濃縮",
-                            "混水濃縮",
-                            "雙倍混水濃縮",
-                        ],
+                        labels: [],
                         dataLabels: {
                             enabled: false,
                         },
@@ -459,6 +479,7 @@ export default {
     components: {
         VueApexCharts,
         VxTimeline,
+        ChangeTimeDurationDropdown,
     },
     created() {
         this.$store.registerModule("coffe", moduleCoffe);
@@ -483,8 +504,8 @@ export default {
         // );
         this.fetchDayCoffeCount();
         this.fetchRecordListItems();
-
-        this.$store.dispatch("coffe/fetchWeekCoffeLists");
+        this.fetchCoffeDonut("week");
+        this.fetchWeekCoffeLists("week");
     },
     computed: {
         //Coffe
@@ -520,6 +541,49 @@ export default {
         },
     },
     methods: {
+        coffeDonutChanged(event) {
+            this.fetchCoffeDonut(event);
+            switch (event) {
+                case "week":
+                    return (
+                        (this.coffeDonutTitle = "本週累積沖泡數"),
+                        (this.coffeDonutTimeDuration = "week")
+                    );
+                case "month":
+                    return (
+                        (this.coffeDonutTitle = "本月累積沖泡數"),
+                        (this.coffeDonutTimeDuration = "month")
+                    );
+                default:
+                    return (
+                        (this.coffeDonutTitle = "本週累積沖泡數"),
+                        (this.coffeDonutTimeDuration = "week")
+                    );
+            }
+            // console.log(event);
+        },
+        weekCoffeListsChanged(event) {
+            this.fetchWeekCoffeLists(event);
+
+            switch (event) {
+                case "week":
+                    return (
+                        (this.weekCoffeListsTitle = "本週沖泡排名"),
+                        (this.weekCoffeListsTimeDuration = "week")
+                    );
+                case "month":
+                    return (
+                        (this.weekCoffeListsTitle = "本月沖泡排名"),
+                        (this.weekCoffeListsTimeDuration = "month")
+                    );
+                default:
+                    return (
+                        (this.weekCoffeListsTitle = "本週沖泡排名"),
+                        (this.weekCoffeListsTimeDuration = "week")
+                    );
+            }
+            // console.log(event);
+        },
         async addFakeData() {
             // this.$store.dispatch("coffe/setUsingMachine", {
             //     user: "eventData.username",
@@ -691,15 +755,30 @@ export default {
         async fetchDayCoffeCount() {
             await this.$store.dispatch("coffe/fetchDayCoffeCount", {
                 cafe_device_id: "1", //暫時寫死
-                search_date: moment().format("YYYY-MM-DD"),
+                // search_date: moment().format("YYYY-MM-DD"),
             });
         },
         async fetchRecordListItems() {
             await this.$store.dispatch("coffe/fetchRecordListItems", {
                 cafe_device_id: "1", //暫時寫死
-                search_date: moment().format("YYYY-MM-DD"),
+                // search_date: moment().format("YYYY-MM-DD"),
             });
         },
+        async fetchCoffeDonut(type) {
+            await this.$store.dispatch("coffe/fetchCoffeDonut", {
+                cafe_device_id: "1", //暫時寫死
+                search_type: type,
+                // start: moment().weekday(1).format("YYYY-MM-DD"), //本週一
+                // end: moment().weekday(7).format("YYYY-MM-DD"), //本週日
+            });
+        },
+        async fetchWeekCoffeLists(type) {
+            await this.$store.dispatch("coffe/fetchWeekCoffeLists", {
+                cafe_device_id: "1", //暫時寫死
+                search_type: type,
+            });
+        },
+
         async addCoffeLog(eventData) {
             const payload = {
                 cardId: this.usingMachine.cardId,

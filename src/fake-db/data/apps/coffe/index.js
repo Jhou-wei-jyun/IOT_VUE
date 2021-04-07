@@ -316,6 +316,7 @@ const data = {
             usedUser: ['iii', 'jjj'],
         },
     ],
+    coffeDonut: { 1: 20, 2: 1, 6: 30, 7: 8 },
 
 
 }
@@ -333,6 +334,11 @@ mock.onGet('/api/apps/coffe/coffeRecordLists').reply(() => {
 mock.onGet('/api/apps/coffe/weekCoffeLists').reply(() => {
     return [200, data.weekCoffeLists]
 })
+// GET : Get Coffe Donut
+mock.onGet('/api/apps/coffe/donut').reply(() => {
+    return [200, data.coffeDonut]
+})
+
 
 // POST : Add new Item
 mock.onPost('/api/apps/coffe/recordLists/').reply((request) => {

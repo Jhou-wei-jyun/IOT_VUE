@@ -9,7 +9,49 @@
 import moment from "moment";
 import initialState from "./data.js"
 export default {
+  SET_COFFE_DONUT(state, payload) {
+    //init
+    state.coffeDonut.series = []
+    state.coffeDonut.chartOptions.labels = []
+    // state.coffeDonut.series = state.coffeDonut.series.filter(item => item == true)
+    // state.coffeDonut.chartOptions.labels = state.coffeDonut.chartOptions.labels.filter(item => item == true)
+    console.log('fetchCoffeDonut', payload)
+    for (const [key, value] of Object.entries(payload)) {
+      state.coffeDonut.series = [
+        ...state.coffeDonut.series,
+        value,
+      ];
+      state.coffeDonut.chartOptions = {
+        ...state.coffeDonut.chartOptions,
+        ...{
+          labels: [
+            ...state.coffeDonut.chartOptions.labels,
+            key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
+          ],
+        },
+      };
+    }
+  },
+  // ADD_COFFE_DONUT(state, payload) {
+  //   console.log('fetchCoffeDonut', payload)
+  //   for (const [key, value] of Object.entries(payload)) {
+  //     state.coffeDonut.series = [
+  //       ...state.coffeDonut.series,
+  //       value,
+  //     ];
+  //     state.coffeDonut.chartOptions = {
+  //       ...state.coffeDonut.chartOptions,
+  //       ...{
+  //         labels: [
+  //           ...state.coffeDonut.chartOptions.labels,
+  //           key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
+  //         ],
+  //       },
+  //     };
+  //   }
+  // },
   SET_DAY_COFFE_COUNT(state, payload) {
+    console.log('DAY_COFFE_COUNT: ', payload)
     for (const [key, value] of Object.entries(payload)) {
       state.dayCoffeCountBar.series[0].data = [
         ...state.dayCoffeCountBar.series[0].data,
@@ -30,7 +72,16 @@ export default {
     }
   },
   SET_WEEK_COFFE_LISTS(state, weekCoffeLists) {
-    state.weekCoffeLists = weekCoffeLists
+    var weekCoffeData = []
+    weekCoffeLists.forEach(element => {
+      weekCoffeData = [...weekCoffeData, {
+        crown: element.crown,
+        name: element.nickname,
+        img: 'http://10.112.10.69:1500/static/img/' + element.nickname + '.jpg',
+        count: element.count,
+      }]
+    });
+    state.weekCoffeLists = weekCoffeData
   },
   SET_RECORD_LISTS(state, coffeRecordLists) {
     var recordData = []

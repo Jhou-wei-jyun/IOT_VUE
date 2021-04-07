@@ -21,9 +21,8 @@ export default {
   //   })
   // },
   fetchRecordListItems({ commit }, payload) {
-    return axios.post('http://10.112.10.69:1857/api/device/history', {
+    return axios.post('http://10.112.10.69:1857/api/device/history/today', {
       cafe_device_id: payload.cafe_device_id,
-      search_date: payload.search_date,
     })
       .then((response) => {
         console.log('record', response.data.data)
@@ -32,9 +31,8 @@ export default {
       .catch((error) => { console.log(error) })
   },
   fetchDayCoffeCount({ commit }, payload) {
-    return axios.post('http://10.112.10.69:1857/api/cafe_numbers/', {
+    return axios.post('http://10.112.10.69:1857/api/cafe_numbers/today', {
       cafe_device_id: payload.cafe_device_id,
-      search_date: payload.search_date,
     })
       .then((response) => {
         console.log('fetchDayCoffeCount', response.data)
@@ -42,24 +40,39 @@ export default {
       })
       .catch((error) => { console.log(error) })
   },
-  fetchWeekCoffeLists({ commit }) {
+  fetchWeekCoffeLists({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      axios.get('/api/apps/coffe/weekCoffeLists')
+      axios.post('http://10.112.10.69:1857/api/device/history/count', {
+        cafe_device_id: payload.cafe_device_id,
+        search_type: payload.search_type,
+      })
         .then((response) => {
-          const sortedData = response.data.sort(function (a, b) {
+          const sortedData = response.data.data.sort(function (a, b) {
             return a.count < b.count ? 1 : -1;
           });
           sortedData.forEach(element => {
             element = Object.assign(element, { crown: null })
           });
-          sortedData[0] = Object.assign(sortedData[0], { crown: require('@/assets/images/crown/icon12.svg') })
-          sortedData[1] = Object.assign(sortedData[1], { crown: require('@/assets/images/crown/icon13.svg') })
-          sortedData[2] = Object.assign(sortedData[2], { crown: require('@/assets/images/crown/icon14.svg') })
+          for (var i = 0; sortedData.length >= 3 ? i < 3 : i < sortedData.length; i++) {
+
+            sortedData[i] = Object.assign(sortedData[i], { crown: require('@/assets/images/crown/icon' + i + '.svg') })
+          }
+          console.log('sortedData3: ', sortedData);
           commit('SET_WEEK_COFFE_LISTS', sortedData)
           resolve(response)
         })
         .catch((error) => { reject(error) })
     })
+  },
+  fetchCoffeDonut({ commit }, payload) {
+    return axios.post('http://10.112.10.69:1857/api/cafe_numbers/count', {
+      cafe_device_id: payload.cafe_device_id,
+      search_type: payload.search_type,
+    })
+      .then((response) => {
+        commit('SET_COFFE_DONUT', response.data)
+      })
+      .catch((error) => { console.log(error) })
   },
   resetSate({ commit }, payload) {
     commit('RESET_STATE', payload)

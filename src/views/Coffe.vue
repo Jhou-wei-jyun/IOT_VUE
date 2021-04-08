@@ -194,7 +194,7 @@
 
         <div class="vx-row">
             <div class="vx-col w-full md:w-1/3 lg:w-1/3 xl:w-1/3 mb-base">
-                <vx-card :title="coffeDonutTitle" class="log-card">
+                <vx-card :title="coffeDonutTitle" class="medium-log-card">
                     <!-- <change-time-duration-dropdown /> -->
                     <template slot="actions">
                         <change-time-duration-dropdown
@@ -204,9 +204,9 @@
                     </template>
                     <div>
                         <vue-apex-charts
-                            class="mt-6 mb-8 a"
+                            class="mt-6 mb-8"
                             type="donut"
-                            height="250"
+                            height="300"
                             :options="coffeDonut.chartOptions"
                             :series="coffeDonut.series"
                         />
@@ -221,7 +221,7 @@
             <div class="vx-col w-full md:w-1/3 lg:w-1/3 xl:w-1/3 mb-base">
                 <vx-card
                     :title="weekCoffeListsTitle"
-                    class="log-card overflow-hidden"
+                    class="medium-log-card overflow-hidden"
                 >
                     <template slot="actions">
                         <change-time-duration-dropdown
@@ -231,7 +231,7 @@
                     </template>
                     <div slot="no-body" class="mt-4 text-center">
                         <vs-table
-                            max-items="3"
+                            max-items="5"
                             pagination
                             :data="weekCoffeLists"
                             class="table-dark-inverted"
@@ -847,6 +847,9 @@ export default {
 
     .log-card {
         height: 50vh;
+    }
+    .medium-log-card {
+        height: 58vh;
     }
 }
 .crown {

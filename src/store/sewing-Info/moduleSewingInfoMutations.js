@@ -105,11 +105,11 @@ export default {
 
     },
     SET_USER(state, obj) {
-        console.log('da', state.usingMachine)
+        // console.log('da', state.usingMachine)
         // console.log('userName', obj.userName)
         // console.log('userStatus', obj.userStatus)
         // console.log('machineStatus', obj.machineStatus)
-        // console.log('checkTime', obj.checkTime)
+        console.log('checkTime', obj.checkTime)
         state.usingMachine = {
             ...state.usingMachine,
             ...{
@@ -132,7 +132,8 @@ export default {
                         user_status: machineValue.user_status,
                         device_status: machineValue.device_status,
                         user_name: machineValue.user_name,
-                        used_time: moment(machineValue.used_time).local(),
+                        used_time: machineValue.used_time,
+                        // used_time: moment(machineValue.used_time).local(),
                         used_ranking: machineValue.used_ranking,
                     }
                     state.usingMachine = { ...result }

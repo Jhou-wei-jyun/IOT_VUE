@@ -588,8 +588,10 @@ export default {
     filters: {
         timestampToDatetime(timestamp) {
             if (timestamp == null) {
+                console.log("timestamp", timestamp);
                 return null;
             } else {
+                console.log("timestamp2", timestamp);
                 return moment(timestamp).format("HH:mm");
             }
         },
@@ -597,12 +599,13 @@ export default {
             // console.log(status);
             if (status === null) {
                 return status;
-            }
-            if (usingMachine.user_status === "in") {
-                return status + " 使用中";
-            }
-            if (usingMachine.user_status === "out") {
-                return "前一位使用者: " + status;
+            } else {
+                if (usingMachine.user_status === "in") {
+                    return status + " 使用中";
+                }
+                if (usingMachine.user_status === "out") {
+                    return "前一位使用者: " + status;
+                }
             }
         },
     },

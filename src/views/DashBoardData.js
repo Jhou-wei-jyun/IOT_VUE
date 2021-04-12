@@ -59,7 +59,7 @@ export default {
         enabled: false
       },
       xaxis: {
-        categories: ['濃縮', '雙倍濃縮', '混水濃縮', '雙倍混水濃縮'],
+        categories: ['濃縮', '雙倍濃縮', '美式', '雙倍美式'],
       },
 
     },

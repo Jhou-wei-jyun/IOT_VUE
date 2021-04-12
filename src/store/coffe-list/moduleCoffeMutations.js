@@ -26,7 +26,7 @@ export default {
         ...{
           labels: [
             ...state.coffeDonut.chartOptions.labels,
-            key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
+            key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '美式' : key == 7 ? '雙倍美式' : false,
           ],
         },
       };
@@ -44,7 +44,7 @@ export default {
   //       ...{
   //         labels: [
   //           ...state.coffeDonut.chartOptions.labels,
-  //           key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
+  //           key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '美式' : key == 7 ? '雙倍美式' : false,
   //         ],
   //       },
   //     };
@@ -64,7 +64,7 @@ export default {
             categories: [
               ...state.dayCoffeCountBar.chartOptions.xaxis
                 .categories,
-              key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '混水濃縮' : key == 7 ? '雙倍混水濃縮' : false,
+              key == 1 ? '濃縮' : key == 2 ? '雙倍濃縮' : key == 6 ? '美式' : key == 7 ? '雙倍美式' : false,
             ],
           },
         },
@@ -91,7 +91,7 @@ export default {
         name: element.user_nickname,
         img: 'http://10.112.10.69:1500/static/img/' + element.user_nickname + '.jpg',
         time: moment(element.press_time).format('HH:mm'),
-        coffe: element.coffee_type == 1 ? '濃縮' : element.coffee_type == 2 ? '雙倍濃縮' : element.coffee_type == 6 ? '混水濃縮' : element.coffee_type == 7 ? '雙倍混水濃縮' : false,
+        coffe: element.coffee_type == 1 ? '濃縮' : element.coffee_type == 2 ? '雙倍濃縮' : element.coffee_type == 6 ? '美式' : element.coffee_type == 7 ? '雙倍美式' : false,
       }]
     });
     state.coffeRecordLists = recordData

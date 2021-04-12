@@ -12,11 +12,11 @@ const data = {
             count: 10,
         },
         {
-            coffeCup: '混水濃縮',
+            coffeCup: '美式',
             count: 3,
         },
         {
-            coffeCup: '雙倍混水濃縮',
+            coffeCup: '雙倍美式',
             count: 2,
         },
     ],
@@ -26,7 +26,7 @@ const data = {
             'time': '18:10',
             'img': 'http://10.112.10.69:1500/static/img/Phil.jpg',
             'name': '123',
-            'coffe': '雙倍混水濃縮',
+            'coffe': '雙倍美式',
 
         },
         {
@@ -34,7 +34,7 @@ const data = {
             'time': '18:10',
             'img': require('@/assets/images/portrait/small/avatar-s-2.jpg'),
             'name': '123',
-            'coffe': '混水濃縮',
+            'coffe': '美式',
 
         },
         {
@@ -42,7 +42,7 @@ const data = {
             'time': '18:10',
             'img': require('@/assets/images/portrait/small/avatar-s-3.jpg'),
             'name': '123',
-            'coffe': '混水濃縮',
+            'coffe': '美式',
 
         },
         {

@@ -487,7 +487,7 @@ export default {
 
         this.initRfidWebSocket();
         this.initButtonWebSocket();
-        this.initElectWebSocket();
+        // this.initElectWebSocket();
     },
     beforeDestroy: function () {
         //移除 vue instance 之前
@@ -506,6 +506,12 @@ export default {
         this.fetchRecordListItems();
         this.fetchCoffeDonut("week");
         this.fetchWeekCoffeLists("week");
+
+        //FAKE用
+        this.fakeDataLoop(1500);
+        this.counterInterval3000 = setInterval(() => {
+            this.resetElectricity();
+        }, 1000 * 60 * 32);
     },
     computed: {
         //Coffe
@@ -541,6 +547,15 @@ export default {
         },
     },
     methods: {
+        fakeDataLoop(int) {
+            this.counterInterval10000 = window.setInterval(() => {
+                var obj = {
+                    value: Math.floor(Math.random() * Math.floor(int)),
+                    datetime: moment().valueOf(),
+                };
+                this.$store.dispatch("coffe/setElectricity", obj);
+            }, 1000);
+        },
         coffeDonutChanged(event) {
             this.fetchCoffeDonut(event);
             switch (event) {
@@ -597,7 +612,7 @@ export default {
                 userId: "as123",
                 userName: "Phil",
                 userStatus: "in",
-                coffe: "雙倍混水濃縮",
+                coffe: "雙倍美式",
                 checkTime: moment().format("HH:mm"),
             };
             await this.$store
@@ -749,7 +764,7 @@ export default {
                 case "out":
                     return "前一位使用者";
                 default:
-                    return "正在使用";
+                    return "無人使用";
             }
         },
         async fetchDayCoffeCount() {
@@ -789,9 +804,9 @@ export default {
                         : eventData.coffee_type == "2"
                         ? "雙倍濃縮"
                         : eventData.coffee_type == "6"
-                        ? "混水濃縮"
+                        ? "美式"
                         : eventData.coffee_type == "7"
-                        ? "雙倍混水濃縮"
+                        ? "雙倍美式"
                         : false,
                 checkTime: moment().utc(eventData.press_time).format("HH:mm"),
             };

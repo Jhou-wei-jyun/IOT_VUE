@@ -543,7 +543,12 @@ export default {
             return this.$store.state.coffe.coffeDonut;
         },
         allCoffeDonutCount() {
-            return this.coffeDonut.series.reduce((a, b) => a + b);
+            if (this.coffeDonut.series.length === 0) {
+                return 0;
+            } else {
+                return this.coffeDonut.series.reduce((a, b) => a + b);
+            }
+            // this.$nextTick(() => {});
         },
     },
     methods: {
